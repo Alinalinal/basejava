@@ -1,40 +1,48 @@
+package com.urise.webapp.storage;
+
+import com.urise.webapp.model.Resume;
+
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10000];
     private int size = 0;
 
-    void clear() {
+    public void clear() {
         for (int i = 0; i < size; i++) {
             storage[i] = null;
         }
         size = 0;
     }
 
-    void save(Resume r) {
+    public void update(Resume resume) {
+
+    }
+
+    public void save(Resume resume) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(r.uuid)) {
+            if (storage[i].getUuid().equals(resume.getUuid())) {
                 // only unique Resumes are stored in the storage
                 return;
             }
         }
-        storage[size] = r;
+        storage[size] = resume;
         size++;
     }
 
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
+            if (storage[i].getUuid().equals(uuid)) {
                 return storage[i];
             }
         }
         return null;
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
+            if (storage[i].getUuid().equals(uuid)) {
                 storage[i] = storage[size - 1];
                 storage[size - 1] = null;
                 size--;
@@ -46,13 +54,13 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
-        Resume[] arr = new Resume[size];
-        System.arraycopy(storage, 0, arr, 0, size);
-        return arr;
+    public Resume[] getAll() {
+        Resume[] result = new Resume[size];
+        System.arraycopy(storage, 0, result, 0, size);
+        return result;
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 }
