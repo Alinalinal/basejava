@@ -17,7 +17,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        int index = searchOfIndexInStorage(resume.getUuid());
+        int index = findIndex(resume.getUuid());
         if (index == -1) {
             printIsPresentError(false, resume.getUuid());
         } else {
@@ -28,18 +28,16 @@ public class ArrayStorage {
     public void save(Resume resume) {
         if (size == storage.length) {
             System.out.println("ERROR: Storage is full, you cannot save resume with 'uuid = " + resume.getUuid() + "'!");
+        } else if (findIndex(resume.getUuid()) != -1) {
+            printIsPresentError(true, resume.getUuid());
         } else {
-            if (searchOfIndexInStorage(resume.getUuid()) != -1) {
-                printIsPresentError(true, resume.getUuid());
-            } else {
-                storage[size] = resume;
-                size++;
-            }
+            storage[size] = resume;
+            size++;
         }
     }
 
     public Resume get(String uuid) {
-        int index = searchOfIndexInStorage(uuid);
+        int index = findIndex(uuid);
         if (index == -1) {
             printIsPresentError(false, uuid);
             return null;
@@ -48,7 +46,7 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        int index = searchOfIndexInStorage(uuid);
+        int index = findIndex(uuid);
         if (index == -1) {
             printIsPresentError(false, uuid);
         } else {
@@ -72,7 +70,7 @@ public class ArrayStorage {
     /**
      * @return index of Resume in storage if it exists or '-1'
      */
-    private int searchOfIndexInStorage(String uuid) {
+    private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
