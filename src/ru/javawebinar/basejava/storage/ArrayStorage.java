@@ -1,13 +1,13 @@
-package com.urise.webapp.storage;
+package ru.javawebinar.basejava.storage;
 
-import com.urise.webapp.model.Resume;
+import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage implements Storage {
+public class ArrayStorage extends AbstractArrayStorage {
     private static final int STORAGE_LIMIT = 10000;
 
     private final Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -19,7 +19,7 @@ public class ArrayStorage implements Storage {
     }
 
     public void update(Resume resume) {
-        int index = findIndex(resume.getUuid());
+        int index = getIndex(resume.getUuid());
         if (index == -1) {
             printIsPresentError(false, resume.getUuid());
         } else {
@@ -30,7 +30,7 @@ public class ArrayStorage implements Storage {
     public void save(Resume resume) {
         if (size == STORAGE_LIMIT) {
             System.out.println("ERROR: Storage is full, you cannot save resume with 'uuid = " + resume.getUuid() + "'!");
-        } else if (findIndex(resume.getUuid()) != -1) {
+        } else if (getIndex(resume.getUuid()) != -1) {
             printIsPresentError(true, resume.getUuid());
         } else {
             storage[size] = resume;
@@ -38,17 +38,8 @@ public class ArrayStorage implements Storage {
         }
     }
 
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index == -1) {
-            printIsPresentError(false, uuid);
-            return null;
-        }
-        return storage[index];
-    }
-
     public void delete(String uuid) {
-        int index = findIndex(uuid);
+        int index = getIndex(uuid);
         if (index == -1) {
             printIsPresentError(false, uuid);
         } else {
@@ -65,14 +56,10 @@ public class ArrayStorage implements Storage {
         return Arrays.copyOf(storage, size);
     }
 
-    public int size() {
-        return size;
-    }
-
     /**
      * @return index of Resume in storage if it exists or '-1'
      */
-    private int findIndex(String uuid) {
+    protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
@@ -82,7 +69,7 @@ public class ArrayStorage implements Storage {
     }
 
     private void printIsPresentError(boolean isPresent, String uuid) {
-        System.out.println(isPresent ? "ERROR: Resume with 'uuid = " + uuid + "' already exists in storage!"
-                : "ERROR: No resume with 'uuid = " + uuid + "' in storage!");
+        System.out.println(isPresent ? "ERROR: Resume with 'uuid = " + uuid + "' already exist in storage!"
+                : "ERROR: Resume with 'uuid = " + uuid + "' not exist in storage!");
     }
 }
