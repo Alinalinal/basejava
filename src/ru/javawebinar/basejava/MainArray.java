@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Interactive test for com.urise.webapp.storage.ArrayStorage implementation
+ * Interactive test for ru.javawebinar.basejava.storage.ArrayStorage&SortedArrayStorage implementation
  * (just run, no need to understand)
  */
 public class MainArray {

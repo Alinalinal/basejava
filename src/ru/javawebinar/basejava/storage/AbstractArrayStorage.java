@@ -32,7 +32,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public final Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            printIsPresentError(false, uuid);
+            printErrorMessage(false, uuid);
             return null;
         }
         return storage[index];
@@ -41,7 +41,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void update(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index < 0) {
-            printIsPresentError(false, resume.getUuid());
+            printErrorMessage(false, resume.getUuid());
         } else {
             storage[index] = resume;
         }
@@ -53,9 +53,10 @@ public abstract class AbstractArrayStorage implements Storage {
         } else {
             int index = getIndex(resume.getUuid());
             if (getIndex(resume.getUuid()) >= 0) {
-                printIsPresentError(true, resume.getUuid());
+                printErrorMessage(true, resume.getUuid());
             } else {
                 insert(resume, index);
+                size++;
             }
         }
     }
@@ -63,13 +64,15 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void delete(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            printIsPresentError(false, uuid);
+            printErrorMessage(false, uuid);
         } else {
             extract(index);
+            storage[size - 1] = null;
+            size--;
         }
     }
 
-    private void printIsPresentError(boolean isPresent, String uuid) {
+    private void printErrorMessage(boolean isPresent, String uuid) {
         System.out.println(isPresent ? "ERROR: Resume with 'uuid = " + uuid + "' already exist in storage!"
                 : "ERROR: Resume with 'uuid = " + uuid + "' not exist in storage!");
     }

@@ -4,7 +4,7 @@ import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.*;
 
 /**
- * Test for your com.urise.webapp.storage.ArrayStorage implementation
+ * Test for your ru.javawebinar.basejava.storage.ArrayStorage&SortedArrayStorage implementation
  */
 public class MainTestArrayStorage {
     // private static final Storage ARRAY_STORAGE = new ArrayStorage();
