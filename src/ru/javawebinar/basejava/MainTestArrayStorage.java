@@ -67,6 +67,10 @@ public class MainTestArrayStorage {
             ARRAY_STORAGE.save(resume);
         }
         System.out.println(ARRAY_STORAGE.size());
+        System.out.println();
+
+        ARRAY_STORAGE.delete("uuid10000");
+        System.out.println(ARRAY_STORAGE.size());
     }
 
     static void printAll() {

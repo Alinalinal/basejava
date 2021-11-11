@@ -66,7 +66,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index < 0) {
             printErrorMessage(false, uuid);
         } else {
-            extract(index);
+            extractResume(index);
             storage[size - 1] = null;
             size--;
         }
@@ -81,5 +81,5 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract void insert(Resume resume, int index);
 
-    protected abstract void extract(int index);
+    protected abstract void extractResume(int index);
 }
