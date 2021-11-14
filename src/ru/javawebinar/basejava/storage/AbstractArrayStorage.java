@@ -1,5 +1,8 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.ExistStorageException;
+import ru.javawebinar.basejava.exception.NotExistStorageException;
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
@@ -32,8 +35,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public final Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            printErrorMessage(false, uuid);
-            return null;
+            throw new NotExistStorageException(uuid);
         }
         return storage[index];
     }
@@ -41,7 +43,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void update(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index < 0) {
-            printErrorMessage(false, resume.getUuid());
+            throw new NotExistStorageException(resume.getUuid());
         } else {
             storage[index] = resume;
         }
@@ -49,11 +51,11 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public final void save(Resume resume) {
         if (size == STORAGE_LIMIT) {
-            System.out.println("ERROR: Storage is full, you cannot save resume with 'uuid = " + resume.getUuid() + "'!");
+            throw new StorageException("Storage overflow!", resume.getUuid());
         } else {
             int index = getIndex(resume.getUuid());
             if (getIndex(resume.getUuid()) >= 0) {
-                printErrorMessage(true, resume.getUuid());
+                throw new ExistStorageException(resume.getUuid());
             } else {
                 insert(resume, index);
                 size++;
@@ -64,17 +66,12 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void delete(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            printErrorMessage(false, uuid);
+            throw new NotExistStorageException(uuid);
         } else {
             extractResume(index);
             storage[size - 1] = null;
             size--;
         }
-    }
-
-    private void printErrorMessage(boolean isPresent, String uuid) {
-        System.out.println(isPresent ? "ERROR: Resume with 'uuid = " + uuid + "' already exist in storage!"
-                : "ERROR: Resume with 'uuid = " + uuid + "' not exist in storage!");
     }
 
     protected abstract int getIndex(String uuid);
