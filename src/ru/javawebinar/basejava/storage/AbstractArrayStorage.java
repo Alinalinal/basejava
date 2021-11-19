@@ -44,34 +44,30 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(resume.getUuid());
         if (index < 0) {
             throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
         }
+        storage[index] = resume;
     }
 
     public final void save(Resume resume) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow!", resume.getUuid());
-        } else {
-            int index = getIndex(resume.getUuid());
-            if (getIndex(resume.getUuid()) >= 0) {
-                throw new ExistStorageException(resume.getUuid());
-            } else {
-                insert(resume, index);
-                size++;
-            }
         }
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
+                throw new ExistStorageException(resume.getUuid());
+        }
+        insert(resume, index);
+        size++;
     }
 
     public final void delete(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
             throw new NotExistStorageException(uuid);
-        } else {
-            extractResume(index);
-            storage[size - 1] = null;
-            size--;
         }
+        extractResume(index);
+        storage[size - 1] = null;
+        size--;
     }
 
     protected abstract int getIndex(String uuid);
