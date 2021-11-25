@@ -6,11 +6,12 @@ import ru.javawebinar.basejava.model.Resume;
  * Array based storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
+
     /**
      * @return index of Resume in storage if it exists or '-1'
      */
     @Override
-    protected int getIndex(String uuid) {
+    protected final int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
@@ -20,12 +21,12 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void insert(Resume resume, int index) {
+    protected final void insertByIndex(Resume resume, int index) {
         storage[size] = resume;
     }
 
     @Override
-    protected void extractResume(int index) {
+    protected final void extractByIndex(int index) {
         storage[index] = storage[size - 1];
     }
 }
