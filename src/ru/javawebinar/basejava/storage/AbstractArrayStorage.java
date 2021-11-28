@@ -44,14 +44,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected final void deleteByIndex(int index) {
+    protected final void deleteByIndex(int index, String uuid) {
         extractByIndex(index);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected final Resume getByIndex(int index) {
+    protected final Resume getByIndex(int index, String uuid) {
         return storage[index];
     }
 
