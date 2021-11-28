@@ -2,15 +2,12 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * List based storage for Resumes
- */
-public class ListStorage extends AbstractStorage {
+public class MapStorage extends AbstractStorage {
 
-    private List<Resume> storage = new ArrayList<>();
+    private Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public final void clear() {
@@ -19,7 +16,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public final Resume[] getAll() {
-        return storage.toArray(new Resume[0]);
+        return storage.values().toArray(new Resume[0]);
     }
 
     @Override
@@ -29,33 +26,31 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected final void saveByIndex(Resume resume, int index) {
-        storage.add(resume);
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
     protected final Resume getByIndex(int index, String uuid) {
-        return storage.get(index);
+        return storage.get(uuid);
     }
 
     @Override
     protected final void updateByIndex(Resume resume, int index) {
-        storage.set(index, resume);
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
     protected final void deleteByIndex(int index, String uuid) {
-        storage.remove(index);
+        storage.remove(uuid);
     }
 
     /**
-     * @return index of Resume in storage if it exists or '-1'
+     * @return '1' if Resume exists in storage or '-1'
      */
     @Override
     protected final int getIndex(String uuid) {
-        for (int i = 0; i < storage.size(); i++) {
-            if (storage.get(i).getUuid().equals(uuid)) {
-                return i;
-            }
+        if (storage.containsKey(uuid)) {
+            return 1;
         }
         return -1;
     }

@@ -22,10 +22,10 @@ public abstract class AbstractStorage implements Storage {
     public final Resume get(String uuid) {
         int index = getIndex(uuid);
         checkExist(false, index, uuid);
-        return getByIndex(index);
+        return getByIndex(index, uuid);
     }
 
-    protected abstract Resume getByIndex(int index);
+    protected abstract Resume getByIndex(int index, String uuid);
 
     @Override
     public final void update(Resume resume) {
@@ -40,10 +40,10 @@ public abstract class AbstractStorage implements Storage {
     public final void delete(String uuid) {
         int index = getIndex(uuid);
         checkExist(false, index, uuid);
-        deleteByIndex(index);
+        deleteByIndex(index, uuid);
     }
 
-    protected abstract void deleteByIndex(int index);
+    protected abstract void deleteByIndex(int index, String uuid);
 
     private void checkExist(boolean isExist, int index, String uuid) {
         if (isExist && index >= 0) {
