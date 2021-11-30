@@ -28,30 +28,30 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected final void saveByIndex(Resume resume, int index) {
+    protected final void saveBy(Object searchKey, Resume resume) {
         storage.add(resume);
     }
 
     @Override
-    protected final Resume getByIndex(int index, String uuid) {
-        return storage.get(index);
+    protected final Resume getBy(Object searchKey) {
+        return storage.get((int) searchKey);
     }
 
     @Override
-    protected final void updateByIndex(Resume resume, int index) {
-        storage.set(index, resume);
+    protected final void updateBy(Object searchKey, Resume resume) {
+        storage.set((int) searchKey, resume);
     }
 
     @Override
-    protected final void deleteByIndex(int index, String uuid) {
-        storage.remove(index);
+    protected final void deleteBy(Object searchKey) {
+        storage.remove((int) searchKey);
     }
 
     /**
      * @return index of Resume in storage if it exists or '-1'
      */
     @Override
-    protected final int getIndex(String uuid) {
+    protected final Object getKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 return i;

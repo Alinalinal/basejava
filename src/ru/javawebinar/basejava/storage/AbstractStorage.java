@@ -6,50 +6,50 @@ import ru.javawebinar.basejava.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected abstract int getIndex(String uuid);
+    protected abstract Object getKey(String uuid);
 
     @Override
     public final void save(Resume resume) {
         String uuid = resume.getUuid();
-        int index = getIndex(uuid);
-        checkExist(true, index, uuid);
-        saveByIndex(resume, index);
+        Object searchKey = getKey(uuid);
+        if ((searchKey instanceof Integer && (Integer) searchKey >= 0) || searchKey instanceof String) {
+            throw new ExistStorageException(uuid);
+        }
+        saveBy(searchKey, resume);
     }
 
-    protected abstract void saveByIndex(Resume resume, int index);
+    protected abstract void saveBy(Object searchKey, Resume resume);
 
     @Override
     public final Resume get(String uuid) {
-        int index = getIndex(uuid);
-        checkExist(false, index, uuid);
-        return getByIndex(index, uuid);
+        Object searchKey = getKey(uuid);
+        if (searchKey instanceof Integer && (Integer) searchKey < 0) {
+            throw new NotExistStorageException(uuid);
+        }
+        return getBy(searchKey);
     }
 
-    protected abstract Resume getByIndex(int index, String uuid);
+    protected abstract Resume getBy(Object searchKey);
 
     @Override
     public final void update(Resume resume) {
         String uuid = resume.getUuid();
-        int index = getIndex(uuid);
-        checkExist(false, index, uuid);
-        updateByIndex(resume, index);
-    }
-
-    protected abstract void updateByIndex(Resume resume, int index);
-
-    public final void delete(String uuid) {
-        int index = getIndex(uuid);
-        checkExist(false, index, uuid);
-        deleteByIndex(index, uuid);
-    }
-
-    protected abstract void deleteByIndex(int index, String uuid);
-
-    private void checkExist(boolean isExist, int index, String uuid) {
-        if (isExist && index >= 0) {
-            throw new ExistStorageException(uuid);
-        } else if (!isExist && index < 0) {
+        Object searchKey = getKey(uuid);
+        if (searchKey instanceof Integer && ((Integer) searchKey) < 0) {
             throw new NotExistStorageException(uuid);
         }
+        updateBy(searchKey, resume);
     }
+
+    protected abstract void updateBy(Object searchKey, Resume resume);
+
+    public final void delete(String uuid) {
+        Object searchKey = getKey(uuid);
+        if (searchKey instanceof Integer && ((Integer) searchKey) < 0) {
+            throw new NotExistStorageException(uuid);
+        }
+        deleteBy(searchKey);
+    }
+
+    protected abstract void deleteBy(Object searchKey);
 }

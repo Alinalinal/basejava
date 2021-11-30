@@ -35,32 +35,32 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected final void saveByIndex(Resume resume, int index) {
+    protected final void saveBy(Object searchKey, Resume resume) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow!", resume.getUuid());
         }
-        insertByIndex(resume, index);
+        insertBy((int) searchKey, resume);
         size++;
     }
 
     @Override
-    protected final void deleteByIndex(int index, String uuid) {
-        extractByIndex(index);
+    protected final void deleteBy(Object searchKey) {
+        extractBy((int) searchKey);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected final Resume getByIndex(int index, String uuid) {
-        return storage[index];
+    protected final Resume getBy(Object searchKey) {
+        return storage[(int) searchKey];
     }
 
     @Override
-    protected final void updateByIndex(Resume resume, int index) {
-        storage[index] = resume;
+    protected final void updateBy(Object searchKey, Resume resume) {
+        storage[(int) searchKey] = resume;
     }
 
-    protected abstract void insertByIndex(Resume resume, int index);
+    protected abstract void insertBy(int searchKey, Resume resume);
 
-    protected abstract void extractByIndex(int index);
+    protected abstract void extractBy(int searchKey);
 }
