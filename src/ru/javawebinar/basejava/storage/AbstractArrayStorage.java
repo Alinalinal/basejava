@@ -12,7 +12,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected static final int STORAGE_LIMIT = 10000;
 
-    protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
     @Override
@@ -43,12 +43,16 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size++;
     }
 
+    protected abstract void insertBy(int searchKey, Resume resume);
+
     @Override
     protected final void deleteBy(Object searchKey) {
         extractBy((int) searchKey);
         storage[size - 1] = null;
         size--;
     }
+
+    protected abstract void extractBy(int searchKey);
 
     @Override
     protected final Resume getBy(Object searchKey) {
@@ -60,7 +64,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         storage[(int) searchKey] = resume;
     }
 
-    protected abstract void insertBy(int searchKey, Resume resume);
-
-    protected abstract void extractBy(int searchKey);
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
+    }
 }

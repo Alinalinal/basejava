@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class ListStorage extends AbstractStorage {
 
-    private List<Resume> storage = new ArrayList<>();
+    private final List<Resume> storage = new ArrayList<>();
 
     @Override
     public final void clear() {
@@ -58,5 +58,10 @@ public class ListStorage extends AbstractStorage {
             }
         }
         return -1;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
     }
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
 
-    private Map<String, Resume> storage = new HashMap<>();
+    private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public final void clear() {
@@ -45,13 +45,15 @@ public class MapStorage extends AbstractStorage {
     }
 
     /**
-     * @return '1' if Resume exists in storage or '-1'
+     * @return String uuid if Resume exists in storage or null
      */
     @Override
     protected final Object getKey(String uuid) {
-        if (storage.containsKey(uuid)) {
-            return uuid;
-        }
-        return -1;
+        return storage.containsKey(uuid) ? uuid : null;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
     }
 }
