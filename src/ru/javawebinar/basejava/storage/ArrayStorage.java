@@ -11,7 +11,7 @@ public class ArrayStorage extends AbstractArrayStorage {
      * @return index of Resume in storage if it exists or '-1'
      */
     @Override
-    protected final Object getKey(String uuid) {
+    protected final Integer getSearchKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
@@ -21,12 +21,12 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected final void insertBy(int searchKey, Resume resume) {
+    protected final void insertElement(int index, Resume resume) {
         storage[size] = resume;
     }
 
     @Override
-    protected final void extractBy(int searchKey) {
-        storage[searchKey] = storage[size - 1];
+    protected final void extractElement(int index) {
+        storage[index] = storage[size - 1];
     }
 }
