@@ -70,7 +70,7 @@ public abstract class AbstractStorageTest {
     public void getAll() {
         assertSize(3);
         Resume[] array2 = storage.getAll();
-        Arrays.sort(array2);
+        Arrays.sort(array2); //?
         assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3}, array2);
     }
 
