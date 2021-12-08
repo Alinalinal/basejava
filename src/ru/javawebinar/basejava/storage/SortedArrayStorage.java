@@ -7,15 +7,15 @@ import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-    private static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
+    private static final Comparator<Resume> COMPARATOR_BY_UUID = Comparator.comparing(Resume::getUuid);
 
     /**
      * @return index of Resume in storage if it exists or '< 0'
      */
     @Override
     protected final Integer getSearchKey(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
+        Resume searchKey = new Resume(uuid, null);
+        return Arrays.binarySearch(storage, 0, size, searchKey, COMPARATOR_BY_UUID);
     }
 
     @Override
