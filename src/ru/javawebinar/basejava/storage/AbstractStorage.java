@@ -50,7 +50,7 @@ public abstract class AbstractStorage implements Storage {
      */
     public final List<Resume> getAllSorted() {
         List<Resume> resultList = getList();
-        Collections.sort(resultList, COMPARATOR_BY_FULL_NAME_THEN_UUID);
+        resultList.sort(COMPARATOR_BY_FULL_NAME_THEN_UUID);
         return resultList;
     }
 
