@@ -19,12 +19,7 @@ public abstract class AbstractMapStorage extends AbstractStorage {
     }
 
     @Override
-    protected final boolean isExist(Object searchKey) {
-        return searchKey != null;
-    }
-
-    @Override
-    protected final List<Resume> getList() {
+    protected final List<Resume> doCopyAll() {
         return new ArrayList<>(map.values());
     }
 }

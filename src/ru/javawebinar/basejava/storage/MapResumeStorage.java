@@ -5,23 +5,23 @@ import ru.javawebinar.basejava.model.Resume;
 public class MapResumeStorage extends AbstractMapStorage {
 
     @Override
-    protected final void doSave(Object searchKey, Resume resume) {
+    protected final void doSave(Object searchResume, Resume resume) {
         map.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected final Resume doGet(Object searchKey) {
-        return (Resume) searchKey;
+    protected final Resume doGet(Object searchResume) {
+        return (Resume) searchResume;
     }
 
     @Override
-    protected final void doUpdate(Object searchKey, Resume resume) {
-        map.put(((Resume) searchKey).getUuid(), resume);
+    protected final void doUpdate(Object searchResume, Resume resume) {
+        map.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected final void doDelete(Object searchKey) {
-        map.remove(((Resume) searchKey).getUuid());
+    protected final void doDelete(Object searchResume) {
+        map.remove(((Resume) searchResume).getUuid());
     }
 
     /**
@@ -29,6 +29,11 @@ public class MapResumeStorage extends AbstractMapStorage {
      */
     @Override
     protected Resume getSearchKey(String uuid) {
-        return map.getOrDefault(uuid, null);
+        return map.get(uuid);
+    }
+
+    @Override
+    protected final boolean isExist(Object searchResume) {
+        return searchResume != null;
     }
 }

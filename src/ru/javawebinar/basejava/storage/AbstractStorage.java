@@ -23,7 +23,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract boolean isExist(Object searchKey);
 
-    protected abstract List<Resume> getList();
+    protected abstract List<Resume> doCopyAll();
 
     @Override
     public final void save(Resume resume) {
@@ -49,7 +49,7 @@ public abstract class AbstractStorage implements Storage {
      * @return list, sorted by 'fullName' then by 'uuid', contains only Resumes in storage (without null)
      */
     public final List<Resume> getAllSorted() {
-        List<Resume> resultList = getList();
+        List<Resume> resultList = doCopyAll();
         resultList.sort(COMPARATOR_BY_FULL_NAME_THEN_UUID);
         return resultList;
     }

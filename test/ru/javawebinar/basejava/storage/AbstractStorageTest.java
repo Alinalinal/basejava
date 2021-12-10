@@ -20,10 +20,10 @@ public abstract class AbstractStorageTest {
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
 
-    private static final String FULL_NAME_1 = "fullName 1";
-    private static final String FULL_NAME_2 = "fullName 2";
-    private static final String FULL_NAME_3 = "fullName 3";
-    private static final String FULL_NAME_4 = "fullName 4";
+    private static final String FULL_NAME_1 = "Name 1";
+    private static final String FULL_NAME_2 = "Name 2";
+    private static final String FULL_NAME_3 = "Name 3";
+    private static final String FULL_NAME_4 = "Name 4";
 
     private static final Resume RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
     private static final Resume RESUME_2 = new Resume(UUID_2, FULL_NAME_2);

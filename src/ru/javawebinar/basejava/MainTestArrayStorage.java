@@ -9,6 +9,7 @@ import java.util.List;
  * Test for your ru.javawebinar.basejava.storage.ArrayStorage&SortedArrayStorage implementation
  */
 public class MainTestArrayStorage {
+
     // private static final Storage STORAGE = new ArrayStorage();
     // private static final Storage STORAGE = new SortedArrayStorage();
     // private static final Storage STORAGE = new ListStorage();
@@ -16,9 +17,9 @@ public class MainTestArrayStorage {
     private static final Storage STORAGE = new MapResumeStorage();
 
     public static void main(String[] args) {
-        Resume r1 = new Resume("uuid1", "A A");
-        Resume r2 = new Resume("uuid2", "B B");
-        Resume r3 = new Resume("uuid3", "C C");
+        Resume r1 = new Resume("Name 1");
+        Resume r2 = new Resume("Name 2");
+        Resume r3 = new Resume("Name 3");
 
         STORAGE.save(r1);
         STORAGE.save(r2);
@@ -36,13 +37,13 @@ public class MainTestArrayStorage {
         System.out.println();
         printAll();
 
-        Resume r4 = new Resume("uuid2", "D D");
+        Resume r4 = new Resume(r2.getUuid(), "Name 4");
         STORAGE.update(r4);
         printAll();
         System.out.println("Get r4: " + STORAGE.get(r4.getUuid()));
         System.out.println();
 
-        Resume r5 = new Resume("uuid5", "E E");
+        Resume r5 = new Resume("Name 5");
         // STORAGE.update(r5); // must throw NotExistStorageException
         // STORAGE.delete(r5.getUuid()); // must throw NotExistStorageException
 
@@ -62,7 +63,7 @@ public class MainTestArrayStorage {
 
         Resume resume;
         for (int i = 0; i < 10000; i++) {
-            resume = new Resume("uuid" + (i + 1), "fullName" + i);
+            resume = new Resume("uuid" + (i + 1), "Name " + i);
             STORAGE.save(resume);
         }
         System.out.println(STORAGE.size());
