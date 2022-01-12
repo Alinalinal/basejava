@@ -10,7 +10,7 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private final Map<ContactType, String> contacts;
+    private final Map<ContactType, Link> contacts;
     private final Map<SectionType, AbstractSection> sections;
 
     public Resume(String fullName) {
@@ -34,7 +34,7 @@ public class Resume {
         return fullName;
     }
 
-    public Map<ContactType, String> getContacts() {
+    public Map<ContactType, Link> getContacts() {
         return contacts;
     }
 
@@ -42,11 +42,11 @@ public class Resume {
         return sections;
     }
 
-    public void addContact(ContactType type, String info) {
+    public final void addContact(ContactType type, Link info) {
         contacts.put(type, info);
     }
 
-    public void addSection(SectionType type, AbstractSection info) {
+    public final void addSection(SectionType type, AbstractSection info) {
         sections.put(type, info);
     }
 
@@ -55,12 +55,12 @@ public class Resume {
         if (this == o) return true;
         if (!(o instanceof Resume)) return false;
         Resume resume = (Resume) o;
-        return getUuid().equals(resume.getUuid()) && getFullName().equals(resume.getFullName());
+        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName) && Objects.equals(contacts, resume.contacts) && Objects.equals(sections, resume.sections);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUuid(), getFullName());
+        return Objects.hash(uuid, fullName, contacts, sections);
     }
 
     @Override

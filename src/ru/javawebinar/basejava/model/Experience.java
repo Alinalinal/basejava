@@ -4,17 +4,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Experience {
-    private String name;
-    private LocalDate fromDate;
-    private LocalDate tillDate;
-    private String headInfo;
-    private String additionalInfo;
+    private final Link name;
+    private final LocalDate fromDate;
+    private final LocalDate tillDate;
+    private final String headInfo;
+    private final String additionalInfo;
 
-    public Experience(String name, LocalDate fromDate, LocalDate tillDate, String headInfo) {
+    public Experience(Link name, LocalDate fromDate, LocalDate tillDate, String headInfo) {
         this(name, fromDate, tillDate, headInfo, "");
     }
 
-    public Experience(String name, LocalDate fromDate, LocalDate tillDate, String headInfo, String additionalInfo) {
+    public Experience(Link name, LocalDate fromDate, LocalDate tillDate, String headInfo, String additionalInfo) {
         this.name = name;
         this.fromDate = fromDate;
         this.tillDate = tillDate;
@@ -26,7 +26,7 @@ public class Experience {
     public String toString() {
         StringBuilder string = new StringBuilder();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
-        string.append(name.toUpperCase()).append('\n').append(fromDate.format(formatter)).append(" - ");
+        string.append(name.getTitle().toUpperCase()).append('\n').append(fromDate.format(formatter)).append(" - ");
         if (tillDate.equals(LocalDate.now())) {
             string.append("Сейчас");
         } else {

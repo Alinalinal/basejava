@@ -1,16 +1,19 @@
 package ru.javawebinar.basejava.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ListSection extends AbstractSection {
-    private List<String> sectionInfo;
+    private final List<String> sectionInfo;
 
-    public ListSection(String ... strings) {
+    public ListSection(String... info) {
         this.sectionInfo = new ArrayList<>();
-        for (String info : strings) {
-            sectionInfo.add(info);
-        }
+        setToSectionInfo(info);
+    }
+
+    private void setToSectionInfo(String[] info) {
+        sectionInfo.addAll(Arrays.asList(info));
     }
 
     @Override

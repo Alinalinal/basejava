@@ -1,16 +1,19 @@
 package ru.javawebinar.basejava.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ExperienceListSection extends AbstractSection {
-    private List<Experience> sectionInfo;
+    private final List<Experience> sectionInfo;
 
-    public ExperienceListSection(Experience ... experiences) {
+    public ExperienceListSection(Experience... info) {
         this.sectionInfo = new ArrayList<>();
-        for (Experience info : experiences) {
-            sectionInfo.add(info);
-        }
+        setToSectionInfo(info);
+    }
+
+    private void setToSectionInfo(Experience[] info) {
+        sectionInfo.addAll(Arrays.asList(info));
     }
 
     @Override
