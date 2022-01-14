@@ -1,24 +1,40 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Objects;
+
 public class Link {
-    private String title;
-    private String link;
+    private final String name;
+    private final String url;
 
-    public Link(String title, String link) {
-        this.title = title;
-        this.link = link;
+    public Link(String name, String url) {
+        Objects.requireNonNull(name, "name must not be null");
+        this.name = name;
+        this.url = url;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public String getLink() {
-        return link;
+    public String getUrl() {
+        return url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Link)) return false;
+        Link link = (Link) o;
+        return name.equals(link.name) && Objects.equals(url, link.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, url);
     }
 
     @Override
     public String toString() {
-        return title;
+        return name;
     }
 }

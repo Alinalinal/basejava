@@ -10,8 +10,8 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private final Map<ContactType, Link> contacts;
-    private final Map<SectionType, AbstractSection> sections;
+    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -22,8 +22,6 @@ public class Resume {
         Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
-        this.contacts = new EnumMap<>(ContactType.class);
-        this.sections = new EnumMap<>(SectionType.class);
     }
 
     public String getUuid() {
@@ -34,7 +32,7 @@ public class Resume {
         return fullName;
     }
 
-    public Map<ContactType, Link> getContacts() {
+    public Map<ContactType, String> getContacts() {
         return contacts;
     }
 
@@ -42,7 +40,15 @@ public class Resume {
         return sections;
     }
 
-    public final void addContact(ContactType type, Link info) {
+    public String getContact(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public AbstractSection getSection(SectionType type) {
+        return sections.get(type);
+    }
+
+    public final void addContact(ContactType type, String info) {
         contacts.put(type, info);
     }
 
@@ -55,7 +61,8 @@ public class Resume {
         if (this == o) return true;
         if (!(o instanceof Resume)) return false;
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName) && Objects.equals(contacts, resume.contacts) && Objects.equals(sections, resume.sections);
+        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(contacts, resume.contacts) && Objects.equals(sections, resume.sections);
     }
 
     @Override
