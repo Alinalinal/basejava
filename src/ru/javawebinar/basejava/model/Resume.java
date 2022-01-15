@@ -48,12 +48,12 @@ public class Resume {
         return sections.get(type);
     }
 
-    public final void addContact(ContactType type, String info) {
-        contacts.put(type, info);
+    public final void setContact(ContactType type, String content) {
+        contacts.put(type, content);
     }
 
-    public final void addSection(SectionType type, AbstractSection info) {
-        sections.put(type, info);
+    public final void setSection(SectionType type, AbstractSection content) {
+        sections.put(type, content);
     }
 
     @Override
