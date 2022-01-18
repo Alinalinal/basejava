@@ -5,12 +5,14 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     private File directory;
+    private int size = 0;
 
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -28,6 +30,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             file.createNewFile();
             doWrite(resume, file);
+            size++;
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -35,17 +38,28 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume doGet(File file) {
-        return null;
+        Resume resume;
+        try {
+            resume = doRead(file);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
+        return resume;
     }
 
     @Override
     protected void doUpdate(File file, Resume resume) {
-
+        try {
+            doWrite(resume, file);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
     }
 
     @Override
     protected void doDelete(File file) {
-
+        file.delete();
+        size--;
     }
 
     @Override
@@ -60,18 +74,37 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doCopyAll() {
-        return null;
+        List<Resume> list = new ArrayList<>();
+        if (size > 0) {
+            File[] files = directory.listFiles();
+            for (File file : files) {
+                try {
+                    list.add(doRead(file));
+                } catch (IOException e) {
+                    throw new StorageException("IO error", file.getName(), e);
+                }
+            }
+        }
+        return list;
     }
 
     @Override
     public void clear() {
-
+        if (size > 0) {
+            File[] files = directory.listFiles();
+            for (File file : files) {
+                file.delete();
+            }
+            size = 0;
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     protected abstract void doWrite(Resume resume, File file) throws IOException;
+
+    protected abstract Resume doRead(File file) throws IOException;
 }
