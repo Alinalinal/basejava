@@ -32,14 +32,6 @@ public class Resume {
         return fullName;
     }
 
-    public Map<ContactType, String> getContacts() {
-        return contacts;
-    }
-
-    public Map<SectionType, AbstractSection> getSections() {
-        return sections;
-    }
-
     public String getContact(ContactType type) {
         return contacts.get(type);
     }
@@ -48,12 +40,12 @@ public class Resume {
         return sections.get(type);
     }
 
-    public final void setContact(ContactType type, String content) {
-        contacts.put(type, content);
+    public final void addContact(ContactType type, String value) {
+        contacts.put(type, value);
     }
 
-    public final void setSection(SectionType type, AbstractSection content) {
-        sections.put(type, content);
+    public final void addSection(SectionType type, AbstractSection section) {
+        sections.put(type, section);
     }
 
     @Override

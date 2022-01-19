@@ -1,10 +1,15 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
     private final List<Organization> content;
+
+    public OrganizationSection(Organization... content) {
+        this(Arrays.asList(content));
+    }
 
     public OrganizationSection(List<Organization> content) {
         Objects.requireNonNull(content, "content must not be null");
@@ -30,10 +35,6 @@ public class OrganizationSection extends AbstractSection {
 
     @Override
     public String toString() {
-        StringBuilder string = new StringBuilder();
-        for (Organization info : content) {
-            string.append(info).append('\n');
-        }
-        return string.toString();
+        return content.toString();
     }
 }
