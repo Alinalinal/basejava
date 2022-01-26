@@ -1,8 +1,12 @@
 package ru.javawebinar.basejava.storage;
 
-public class ObjectStreamPathStorageTest extends PathStorageTest {
+import ru.javawebinar.basejava.storage.strategy.ObjectStreamStrategy;
 
-    public ObjectStreamPathStorageTest() {
-        super(new PathStorage(STORAGE_DIR.toString(), new ObjectStreamStrategy()));
+import java.io.IOException;
+
+public class ObjectStreamPathStorageTest extends AbstractStorageTest {
+
+    public ObjectStreamPathStorageTest() throws IOException {
+        super(new PathStorage(STORAGE_DIR.getCanonicalPath(), new ObjectStreamStrategy()));
     }
 }
