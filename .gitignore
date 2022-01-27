@@ -4,6 +4,6 @@ out
 log
 lib
 .DS_Store
-storage
+fileStorage
 
 
