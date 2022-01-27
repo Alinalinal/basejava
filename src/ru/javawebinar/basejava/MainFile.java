@@ -30,24 +30,18 @@ public class MainFile {
         }
 
         dir = new File("./src");
-        printDirectoryDeeply(dir, 0);
+        printDirectoryDeeply(dir, "");
     }
 
-    private static void printDirectoryDeeply(File directory, int indent) {
+    private static void printDirectoryDeeply(File directory, String indent) {
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 1; i <= indent; i++) {
-                    sb.append('\t');
-                }
                 if (file.isDirectory()) {
-                    System.out.println(sb + "Directory: " + file.getName());
-                    indent++;
-                    printDirectoryDeeply(file, indent);
-                    indent--;
+                    System.out.println(indent + "Directory: " + file.getName());
+                    printDirectoryDeeply(file, indent + '\t');
                 } else if (file.isFile()) {
-                    System.out.println(sb + "File: " + file.getName());
+                    System.out.println(indent + "File: " + file.getName());
                 }
             }
         }
