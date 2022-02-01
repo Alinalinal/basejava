@@ -3,6 +3,7 @@ package ru.javawebinar.basejava;
 import ru.javawebinar.basejava.model.*;
 
 import java.time.Month;
+import java.util.Map;
 
 public class ResumeTestData {
     public static void main(String[] args) {
@@ -120,20 +121,13 @@ public class ResumeTestData {
         System.out.println("-------------------------------------------------------------------------------------");
         System.out.println(resume.getFullName().toUpperCase());
         System.out.println("-------------------------------------------------------------------------------------");
-        System.out.println(ContactType.PHONE_NUMBER + " " + resume.getContact(ContactType.PHONE_NUMBER));
-        System.out.println(ContactType.SKYPE + " " + resume.getContact(ContactType.SKYPE));
-        System.out.println(ContactType.EMAIL + " " + resume.getContact(ContactType.EMAIL));
-        System.out.println(ContactType.LINKED_IN + " " + resume.getContact(ContactType.LINKED_IN));
-        System.out.println(ContactType.GIT_HUB + " " + resume.getContact(ContactType.GIT_HUB));
-        System.out.println(ContactType.STACKOVERFLOW + " " + resume.getContact(ContactType.STACKOVERFLOW));
-        System.out.println(ContactType.HOME_PAGE + " " + resume.getContact(ContactType.HOME_PAGE));
+        for (Map.Entry<ContactType, String> entry : resume.getContacts().entrySet()) {
+            System.out.println(entry.getKey().getTitle().toUpperCase() + " " + entry.getValue());
+        }
         System.out.println("-------------------------------------------------------------------------------------");
-        System.out.println(SectionType.OBJECTIVE + " " + resume.getSection(SectionType.OBJECTIVE));
-        System.out.println(SectionType.PERSONAL + " " + resume.getSection(SectionType.PERSONAL));
-        System.out.println(SectionType.ACHIEVEMENT + " " + resume.getSection(SectionType.ACHIEVEMENT));
-        System.out.println(SectionType.QUALIFICATIONS + " " + resume.getSection(SectionType.QUALIFICATIONS));
-        System.out.println(SectionType.EXPERIENCE + " " + resume.getSection(SectionType.EXPERIENCE));
-        System.out.println(SectionType.EDUCATION + " " + resume.getSection(SectionType.EDUCATION));
+        for (Map.Entry<SectionType, AbstractSection> entry : resume.getSections().entrySet()) {
+            System.out.println(entry.getKey().getTitle().toUpperCase() + " " + entry.getValue());
+        }
         System.out.println("-------------------------------------------------------------------------------------");
     }
 }
