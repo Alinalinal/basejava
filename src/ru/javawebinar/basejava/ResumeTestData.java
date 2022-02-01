@@ -63,7 +63,7 @@ public class ResumeTestData {
         resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Java Online Projects", "http://javaops.ru/",
                         new Organization.Position(2013, Month.OCTOBER, "Автор проекта.",
-                                "Создание, организация и проведение Java онлайн проектов и стажировок.\n")),
+                                "Создание, организация и проведение Java онлайн проектов и стажировок.")),
                 new Organization("Wrike", "https://www.wrike.com/",
                         new Organization.Position(2014, Month.OCTOBER, 2016, Month.JANUARY,
                                 "Старший разработчик (backend)",
@@ -117,7 +117,7 @@ public class ResumeTestData {
         return resume;
     }
 
-    private static void printResume(Resume resume) {
+    public static void printResume(Resume resume) {
         System.out.println("-------------------------------------------------------------------------------------");
         System.out.println(resume.getFullName().toUpperCase());
         System.out.println("-------------------------------------------------------------------------------------");
