@@ -117,7 +117,7 @@ public class ResumeTestData {
         return resume;
     }
 
-    public static void printResume(Resume resume) {
+    private static void printResume(Resume resume) {
         System.out.println("-------------------------------------------------------------------------------------");
         System.out.println(resume.getFullName().toUpperCase());
         System.out.println("-------------------------------------------------------------------------------------");

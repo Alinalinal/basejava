@@ -6,9 +6,7 @@ import ru.javawebinar.basejava.util.DateUtil;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataStreamSerializer implements StreamSerializer {
     @Override
@@ -18,60 +16,108 @@ public class DataStreamSerializer implements StreamSerializer {
             dos.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
             dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue());
-            }
+            WriteDataConsumer.writeWithException(contacts.entrySet(), dos, (dos1, o) -> {
+                Map.Entry<ContactType, String> entry = (Map.Entry<ContactType, String>) o;
+                dos1.writeUTF(entry.getKey().name());
+                dos1.writeUTF(entry.getValue());
+            });
             Map<SectionType, AbstractSection> sections = resume.getSections();
             dos.writeInt(sections.size());
+            WriteDataConsumer.writeWithException(sections.entrySet(), dos, (dos12, o) -> {
+                Map.Entry<SectionType, AbstractSection> entry = (Map.Entry<SectionType, AbstractSection>) o;
+                SectionType sectionType = entry.getKey();
+                dos12.writeUTF(sectionType.name());
+                AbstractSection section = entry.getValue();
+                switch (sectionType) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        dos12.writeUTF(((TextSection)section).getContent());
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        List<String> list =
+                                ((ListSection) entry.getValue()).getContent();
+                        dos12.writeInt(list.size());
+                        WriteDataConsumer.writeWithException(list, dos, (dos13, o1) -> dos13.writeUTF((String) o1));
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        List<Organization> content = ((OrganizationSection)
+                                entry.getValue()).getContent();
+                        dos12.writeInt(content.size());
+                        WriteDataConsumer.writeWithException(content, dos, (dos15, o13) -> {
+                            Organization organization = (Organization) o13;
+                            Link link = organization.getHomePage();
+                            dos12.writeUTF(link.getName());
+                            String url = link.getUrl();
+                            dos12.writeUTF(url == null ? "null" : url);
+                            List<Organization.Position> positions = organization.getPositions();
+                            dos12.writeInt(positions.size());
+                            WriteDataConsumer.writeWithException(positions, dos15, (dos14, o12) -> {
+                                Organization.Position position = (Organization.Position) o12;
+                                DateUtil.writeAsData(dos12, position.getStartDate());
+                                DateUtil.writeAsData(dos12, position.getEndDate());
+                                dos12.writeUTF(position.getTitle());
+                                String description = position.getDescription();
+                                dos12.writeUTF(description == null ? "null" : description);
+                            });
+                        });
+                        break;
+                }
+            });
+
+            /*
+            dos.writeUTF(resume.getUuid());
+            dos.writeUTF(resume.getFullName());
+            Map<ContactType, String> contacts = resume.getContacts();
+            dos.writeInt(contacts.size());
+            /*for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+                dos.writeUTF(entry.getKey().name());
+                dos.writeUTF(entry.getValue());
+            }*/
+            /*contacts.entrySet().forEach((entry) -> {
+                dos.writeUTF(entry.getKey().name());
+                dos.writeUTF(String.valueOf(entry.getValue()));
+            });
+            //Set<Map.Entry<ContactType, String>> set = contacts.entrySet();
             for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
-                String sectionName = entry.getKey().name();
-                dos.writeUTF(sectionName);
-                switch (sectionName) {
-                    case "OBJECTIVE":
-                    case "PERSONAL":
+                SectionType sectionType = entry.getKey();
+                dos.writeUTF(sectionType.name());
+                switch (sectionType) {
+                    case OBJECTIVE:
+                    case PERSONAL:
                         dos.writeUTF(((TextSection) entry.getValue()).getContent());
                         break;
-                    case "ACHIEVEMENT":
-                    case "QUALIFICATIONS":
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
                         List<String> list = ((ListSection) entry.getValue()).getContent();
                         dos.writeInt(list.size());
                         for (String s : list) {
                             dos.writeUTF(s);
                         }
                         break;
-                    case "EXPERIENCE":
-                    case "EDUCATION":
+                    case EXPERIENCE:
+                    case EDUCATION:
                         List<Organization> content = ((OrganizationSection) entry.getValue()).getContent();
                         dos.writeInt(content.size());
                         for (Organization org : content) {
                             Link link = org.getHomePage();
                             dos.writeUTF(link.getName());
                             String url = link.getUrl();
-                            if (url == null) {
-                                url = "null";
-                            }
-                            dos.writeUTF(url);
+                            dos.writeUTF(url == null ? "null" : url);
                             List<Organization.Position> positions = org.getPositions();
                             dos.writeInt(positions.size());
                             for (Organization.Position position : positions) {
-                                LocalDate startDate = position.getStartDate();
-                                dos.writeInt(startDate.getYear());
-                                dos.writeInt(startDate.getMonthValue());
-                                LocalDate endDate = position.getEndDate();
-                                dos.writeInt(endDate.getYear());
-                                dos.writeInt(endDate.getMonthValue());
+                                DateUtil.writeAsData(dos, position.getStartDate());
+                                DateUtil.writeAsData(dos, position.getEndDate());
                                 dos.writeUTF(position.getTitle());
                                 String description = position.getDescription();
-                                if (description == null) {
-                                    description = "null";
-                                }
-                                dos.writeUTF(description);
+                                dos.writeUTF(description == null ? "null" : description);
                             }
                         }
                         break;
                 }
-            }
+            } */
         }
     }
 
@@ -107,10 +153,7 @@ public class DataStreamSerializer implements StreamSerializer {
                         for (int j = 0; j < orgListSize; j++) {
                             String name = dis.readUTF();
                             String url = dis.readUTF();
-                            if (url.equals("null")) {
-                                url = null;
-                            }
-                            Link link = new Link(name, url);
+                            Link link = new Link(name, (url.equals("null") ? null : url));
                             int posListSize = dis.readInt();
                             List<Organization.Position> posContent = new ArrayList<>(posListSize);
                             for (int k = 0; k < posListSize; k++) {
@@ -118,10 +161,8 @@ public class DataStreamSerializer implements StreamSerializer {
                                 LocalDate endDate = DateUtil.of(dis.readInt(), Month.of(dis.readInt()));
                                 String title = dis.readUTF();
                                 String description = dis.readUTF();
-                                if (description.equals("null")) {
-                                    description = null;
-                                }
-                                posContent.add(new Organization.Position(startDate, endDate, title, description));
+                                posContent.add(new Organization.Position(startDate, endDate, title,
+                                        (description.equals("null") ? null : description)));
                             }
                             orgContent.add(new Organization(link, posContent));
                         }
@@ -129,6 +170,18 @@ public class DataStreamSerializer implements StreamSerializer {
                 }
             }
             return resume;
+        }
+    }
+
+    @FunctionalInterface
+    public interface WriteDataConsumer<T> {
+        void writeData(DataOutputStream dos, T t) throws IOException;
+
+        static <T> void writeWithException(Collection<T> collection, DataOutputStream dos, WriteDataConsumer consumer)
+                throws IOException {
+            for (T t: collection) {
+                consumer.writeData(dos, t);
+            }
         }
     }
 }
