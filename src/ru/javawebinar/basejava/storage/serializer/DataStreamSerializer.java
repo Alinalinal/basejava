@@ -6,7 +6,9 @@ import ru.javawebinar.basejava.util.DateUtil;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class DataStreamSerializer implements StreamSerializer {
     @Override
@@ -14,11 +16,11 @@ public class DataStreamSerializer implements StreamSerializer {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
-            WriteDataConsumer.writeWithException(resume.getContacts().entrySet(), dos, entry -> {
+            writeWithException(resume.getContacts().entrySet(), dos, entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             });
-            WriteDataConsumer.writeWithException(resume.getSections().entrySet(), dos, entry -> {
+            writeWithException(resume.getSections().entrySet(), dos, entry -> {
                 SectionType sectionType = entry.getKey();
                 dos.writeUTF(sectionType.name());
                 AbstractSection section = entry.getValue();
@@ -29,18 +31,18 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        WriteDataConsumer.writeWithException(((ListSection) section).getContent(), dos,
+                        writeWithException(((ListSection) section).getContent(), dos,
                                 dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        WriteDataConsumer.writeWithException(((OrganizationSection) section).getContent(), dos,
+                        writeWithException(((OrganizationSection) section).getContent(), dos,
                                 organization -> {
                                     Link link = organization.getHomePage();
                                     dos.writeUTF(link.getName());
                                     String url = link.getUrl();
                                     dos.writeUTF(url == null ? "null" : url);
-                                    WriteDataConsumer.writeWithException(organization.getPositions(), dos, position -> {
+                                    writeWithException(organization.getPositions(), dos, position -> {
                                         DateUtil.writeAsData(dos, position.getStartDate());
                                         DateUtil.writeAsData(dos, position.getEndDate());
                                         dos.writeUTF(position.getTitle());
@@ -58,12 +60,8 @@ public class DataStreamSerializer implements StreamSerializer {
     public Resume doRead(InputStream is) throws IOException {
         try (DataInputStream dis = new DataInputStream(is)) {
             Resume resume = new Resume(dis.readUTF(), dis.readUTF());
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            size = dis.readInt();
-            for (int i = 0; i < size; i++) {
+            readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readWithException(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case OBJECTIVE:
@@ -72,50 +70,58 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        int listSize = dis.readInt();
-                        List<String> content = new ArrayList<>(listSize);
-                        for (int j = 0; j < listSize; j++) {
-                            content.add(dis.readUTF());
-                        }
+                        List<String> content = new ArrayList<>();
+                        readWithException(dis, () -> content.add(dis.readUTF()));
                         resume.addSection(sectionType, new ListSection(content));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        int orgListSize = dis.readInt();
-                        List<Organization> orgContent = new ArrayList<>(orgListSize);
-                        for (int j = 0; j < orgListSize; j++) {
+                        List<Organization> orgContent = new ArrayList<>();
+                        readWithException(dis, () -> {
                             String name = dis.readUTF();
                             String url = dis.readUTF();
                             Link link = new Link(name, (url.equals("null") ? null : url));
-                            int posListSize = dis.readInt();
-                            List<Organization.Position> posContent = new ArrayList<>(posListSize);
-                            for (int k = 0; k < posListSize; k++) {
+                            List<Organization.Position> posContent = new ArrayList<>();
+                            readWithException(dis, () -> {
                                 LocalDate startDate = DateUtil.of(dis.readInt(), Month.of(dis.readInt()));
                                 LocalDate endDate = DateUtil.of(dis.readInt(), Month.of(dis.readInt()));
                                 String title = dis.readUTF();
                                 String description = dis.readUTF();
                                 posContent.add(new Organization.Position(startDate, endDate, title,
                                         (description.equals("null") ? null : description)));
-                            }
+                            });
                             orgContent.add(new Organization(link, posContent));
-                        }
+                        });
                         resume.addSection(sectionType, new OrganizationSection(orgContent));
+                        break;
                 }
-            }
+            });
             return resume;
         }
     }
 
-    @FunctionalInterface
-    public interface WriteDataConsumer<T> {
-        void writeData(T t) throws IOException;
-
-        static <T> void writeWithException(Collection<T> collection, DataOutputStream dos,
+    private static <T> void writeWithException(Collection<T> collection, DataOutputStream dos,
                                            WriteDataConsumer<T> consumer) throws IOException {
-            dos.writeInt(collection.size());
-            for (T t : collection) {
-                consumer.writeData(t);
-            }
+        dos.writeInt(collection.size());
+        for (T t : collection) {
+            consumer.writeData(t);
         }
+    }
+
+    private static void readWithException(DataInputStream dis, ReadDataConsumer consumer) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            consumer.readData();
+        }
+    }
+
+    @FunctionalInterface
+    private interface WriteDataConsumer<T> {
+        void writeData(T t) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface ReadDataConsumer {
+        void readData() throws IOException;
     }
 }
