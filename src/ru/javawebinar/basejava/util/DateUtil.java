@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.util;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -15,5 +16,9 @@ public class DateUtil {
     public static void writeAsData(DataOutputStream dos, LocalDate date) throws IOException {
         dos.writeInt(date.getYear());
         dos.writeInt(date.getMonthValue());
+    }
+
+    public static LocalDate readDataDate(DataInputStream dis) throws IOException {
+        return of(dis.readInt(), Month.of(dis.readInt()));
     }
 }

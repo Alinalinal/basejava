@@ -5,7 +5,6 @@ import ru.javawebinar.basejava.util.DateUtil;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -83,8 +82,8 @@ public class DataStreamSerializer implements StreamSerializer {
                             Link link = new Link(name, (url.equals("null") ? null : url));
                             List<Organization.Position> posContent = new ArrayList<>();
                             readWithException(dis, () -> {
-                                LocalDate startDate = DateUtil.of(dis.readInt(), Month.of(dis.readInt()));
-                                LocalDate endDate = DateUtil.of(dis.readInt(), Month.of(dis.readInt()));
+                                LocalDate startDate = DateUtil.readDataDate(dis);
+                                LocalDate endDate = DateUtil.readDataDate(dis);
                                 String title = dis.readUTF();
                                 String description = dis.readUTF();
                                 posContent.add(new Organization.Position(startDate, endDate, title,
@@ -101,7 +100,7 @@ public class DataStreamSerializer implements StreamSerializer {
     }
 
     private static <T> void writeWithException(Collection<T> collection, DataOutputStream dos,
-                                           WriteDataConsumer<T> consumer) throws IOException {
+                                               WriteDataConsumer<T> consumer) throws IOException {
         dos.writeInt(collection.size());
         for (T t : collection) {
             consumer.writeData(t);
