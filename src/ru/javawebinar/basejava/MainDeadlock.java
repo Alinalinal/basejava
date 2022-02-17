@@ -18,12 +18,13 @@ public class MainDeadlock {
             tryGetLock(lock1);
             try {
                 Thread.sleep(50);
+                tryGetLock(lock2);
+                lock2.unlock();
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+                lock1.unlock();
             }
-            tryGetLock(lock2);
-            lock2.unlock();
-            lock1.unlock();
         }).start();
     }
 
