@@ -21,16 +21,16 @@ public class MainStreams {
         System.out.println(oddOrEven(Arrays.asList(9, 8, 0))); //8, 0
         System.out.println();
 
+        System.out.println("oddOrEven2() method");
+        System.out.println(oddOrEven2(Arrays.asList(1, 2, 0, 3, 3, 2, 3))); //1, 3, 3, 3
+        System.out.println(oddOrEven2(Arrays.asList(0, 0, 0))); //[]
+        System.out.println(oddOrEven2(Arrays.asList(9, 8, 0))); //8, 0
+        System.out.println();
+
         System.out.println("oddOrEvenOptional() method");
         System.out.println(oddOrEvenOptional(Arrays.asList(1, 2, 0, 3, 3, 2, 3))); //1, 3, 3, 3
         System.out.println(oddOrEvenOptional(Arrays.asList(0, 0, 0))); //[]
-        System.out.println(oddOrEvenOptional(Arrays.asList(9, 8, 0))); //8, 0
-        System.out.println();
-
-        System.out.println("oddOrEvenOptional2() method");
-        System.out.println(oddOrEvenOptional2(Arrays.asList(1, 2, 0, 3, 3, 2, 3))); //1, 3, 3, 3
-        System.out.println(oddOrEvenOptional2(Arrays.asList(0, 0, 0))); //[]
-        System.out.println(oddOrEvenOptional2(Arrays.asList(9, 8, 0))); //8, 0
+        System.out.println(oddOrEvenOptional(Arrays.asList(9, 8, 0, 1))); //9, 1
     }
 
     private static int minValue(int[] values) {
@@ -39,22 +39,22 @@ public class MainStreams {
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
         Objects.requireNonNull(integers, "Add some Integers to list!");
-        if (integers.stream().mapToInt(Integer::intValue).sum() % 2 == 0) {
-            return integers.stream().filter(x -> x % 2 == 1).collect(Collectors.toList());
-        }
-        return integers.stream().filter(x -> x % 2 == 0).collect(Collectors.toList());
+        boolean isSumEven = integers.stream().mapToInt(Integer::intValue).sum() % 2 == 0;
+        return isSumEven ? integers.stream().filter(x -> x % 2 == 1).collect(Collectors.toList()) :
+                integers.stream().filter(x -> x % 2 == 0).collect(Collectors.toList());
     }
 
-    private static List<Integer> oddOrEvenOptional(List<Integer> integers) {
-        Objects.requireNonNull(integers, "Add some Integers to list!");
-        return integers.stream().collect(Collectors.partitioningBy(x -> x % 2 == 0, Collectors.toList())).
-                get(integers.stream().mapToInt(Integer::intValue).sum() % 2 != 0);
-    }
-
-    private static List<Integer> oddOrEvenOptional2(List<Integer> integers) {
+    private static List<Integer> oddOrEven2(List<Integer> integers) {
         Objects.requireNonNull(integers, "Add some Integers to list!");
         return integers.stream().reduce(0, (a, b) -> a + b) % 2 == 0 ?
                 integers.stream().filter(x -> x % 2 != 0).collect(Collectors.toList()) :
                 integers.stream().filter(x -> x % 2 == 0).collect(Collectors.toList());
+    }
+
+    private static List<Integer> oddOrEvenOptional(List<Integer> integers) {
+        Objects.requireNonNull(integers, "Add some Integers to list!");
+        Map<Boolean, List<Integer>> map = integers.stream().
+                collect(Collectors.partitioningBy(x -> x % 2 == 0, Collectors.toList()));
+        return map.get(map.get((false)).size() % 2 != 0);
     }
 }
