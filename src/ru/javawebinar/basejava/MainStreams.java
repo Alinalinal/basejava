@@ -21,12 +21,6 @@ public class MainStreams {
         System.out.println(oddOrEven(Arrays.asList(9, 8, 0))); //8, 0
         System.out.println();
 
-        System.out.println("oddOrEven2() method");
-        System.out.println(oddOrEven2(Arrays.asList(1, 2, 0, 3, 3, 2, 3))); //1, 3, 3, 3
-        System.out.println(oddOrEven2(Arrays.asList(0, 0, 0))); //[]
-        System.out.println(oddOrEven2(Arrays.asList(9, 8, 0))); //8, 0
-        System.out.println();
-
         System.out.println("oddOrEvenOptional() method");
         System.out.println(oddOrEvenOptional(Arrays.asList(1, 2, 0, 3, 3, 2, 3))); //1, 3, 3, 3
         System.out.println(oddOrEvenOptional(Arrays.asList(0, 0, 0))); //[]
@@ -39,16 +33,8 @@ public class MainStreams {
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
         Objects.requireNonNull(integers, "Add some Integers to list!");
-        boolean isSumEven = integers.stream().mapToInt(Integer::intValue).sum() % 2 == 0;
-        return isSumEven ? integers.stream().filter(x -> x % 2 == 1).collect(Collectors.toList()) :
-                integers.stream().filter(x -> x % 2 == 0).collect(Collectors.toList());
-    }
-
-    private static List<Integer> oddOrEven2(List<Integer> integers) {
-        Objects.requireNonNull(integers, "Add some Integers to list!");
-        return integers.stream().reduce(0, (a, b) -> a + b) % 2 == 0 ?
-                integers.stream().filter(x -> x % 2 != 0).collect(Collectors.toList()) :
-                integers.stream().filter(x -> x % 2 == 0).collect(Collectors.toList());
+        int rem = integers.stream().mapToInt(Integer::intValue).sum() % 2;
+        return integers.stream().filter(n -> n % 2 != rem).collect(Collectors.toList());
     }
 
     private static List<Integer> oddOrEvenOptional(List<Integer> integers) {
