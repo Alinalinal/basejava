@@ -3,7 +3,6 @@ package ru.javawebinar.basejava.storage;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.Config;
-import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -65,7 +64,10 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = ResumeTestData.getCompletedResume(UUID_1, FULL_NAME_4);
+        // Resume resume = ResumeTestData.getCompletedResume(UUID_1, FULL_NAME_4);
+
+        // to test SqlStorage without Contacts and Sections
+        Resume resume = new Resume(UUID_1, FULL_NAME_4);
         storage.update(resume);
         assertEquals(resume, storage.get(UUID_1));
     }
