@@ -20,8 +20,8 @@ public class SqlStorage implements Storage {
 
     private final SqlHelper sqlHelper;
 
-    public SqlStorage() {
-        this.sqlHelper = new SqlHelper();
+    public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+        this.sqlHelper = new SqlHelper(dbUrl, dbUser, dbPassword);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class SqlStorage implements Storage {
                     try {
                         preparedStatement.execute();
                     } catch (PSQLException e) {
-                        if (e.getErrorCode() == 0) {
+                        if (e.getSQLState().equals("23505")) {
                             throw new ExistStorageException(resume.getUuid());
                         }
                     }
@@ -109,7 +109,9 @@ public class SqlStorage implements Storage {
         LOG.info("Get size of DB");
         return sqlHelper.preparedSqlRequest("SELECT count(*) FROM resume", preparedStatement -> {
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
+            if (!rs.next()) {
+                throw new StorageException("");
+            }
             return rs.getInt(1);
         });
     }
