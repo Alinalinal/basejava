@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import org.postgresql.util.PSQLException;
-import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -51,14 +49,7 @@ public class SqlStorage implements Storage {
                 preparedStatement -> {
                     preparedStatement.setString(1, resume.getUuid());
                     preparedStatement.setString(2, resume.getFullName());
-                    try {
-                        preparedStatement.execute();
-                    } catch (PSQLException e) {
-                        if (e.getSQLState().equals("23505")) {
-                            throw new ExistStorageException(resume.getUuid());
-                        }
-                    }
-                    return null;
+                    return preparedStatement.execute();
                 });
     }
 
