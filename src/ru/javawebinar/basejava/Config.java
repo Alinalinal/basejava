@@ -9,12 +9,13 @@ import java.util.Properties;
 public class Config {
     protected static final File PROPS = new File("config/resumes.properties");
     private static final Config INSTANCE = new Config();
-    private final Properties props = new Properties();
+
     private final File storageDir;
     private final Storage sqlStorage;
 
     private Config() {
         try (InputStream is = new FileInputStream(PROPS)) {
+            Properties props = new Properties();
             props.load(is);
             storageDir = new File(props.getProperty("storage.dir"));
             sqlStorage = new SqlStorage(props.getProperty("db.url"), props.getProperty("db.user"),
