@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.Config;
+import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -28,17 +29,17 @@ public abstract class AbstractStorageTest {
     private static final String FULL_NAME_3 = "Name 3";
     private static final String FULL_NAME_4 = "Name 4";
 
+    /*
     private static final Resume R1 = new Resume(UUID_1, FULL_NAME_1);
     private static final Resume R2 = new Resume(UUID_2, FULL_NAME_2);
     private static final Resume R3 = new Resume(UUID_3, FULL_NAME_3);
     private static final Resume R4 = new Resume(UUID_4, FULL_NAME_4);
+     */
 
-    /*
     private static final Resume R1 = ResumeTestData.getCompletedResume(UUID_1, FULL_NAME_1);
     private static final Resume R2 = ResumeTestData.getCompletedResume(UUID_2, FULL_NAME_2);
     private static final Resume R3 = ResumeTestData.getCompletedResume(UUID_3, FULL_NAME_3);
     private static final Resume R4 = ResumeTestData.getCompletedResume(UUID_4, FULL_NAME_4);
-     */
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -65,10 +66,10 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        // Resume resume = ResumeTestData.getCompletedResume(UUID_1, FULL_NAME_4);
+        Resume resume = ResumeTestData.getCompletedResume(UUID_1, FULL_NAME_4);
 
         // to test SqlStorage without Contacts and Sections
-        Resume resume = new Resume(UUID_1, FULL_NAME_4);
+        //Resume resume = new Resume(UUID_1, FULL_NAME_4);
         storage.update(resume);
         assertEquals(resume, storage.get(UUID_1));
     }

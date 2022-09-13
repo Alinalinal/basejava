@@ -1,8 +1,10 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.model.AbstractSection;
+import ru.javawebinar.basejava.model.ContactType;
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.SectionType;
 
-import java.time.Month;
 import java.util.Map;
 
 public class ResumeTestData {
@@ -28,6 +30,8 @@ public class ResumeTestData {
         resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         resume.addContact(ContactType.HOME_PAGE, "http://gkislin.ru/");
 
+
+        /*
         // Позиция
         resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
@@ -113,6 +117,8 @@ public class ResumeTestData {
                 new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/",
                         new Organization.Position(1984, Month.SEPTEMBER, 1987, Month.JUNE,
                                 "Закончил с отличием", null))));
+         */
+
 
         return resume;
     }
