@@ -6,10 +6,13 @@ import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
+import ru.javawebinar.basejava.model.ContactType;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -66,12 +69,12 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = ResumeTestData.getCompletedResume(UUID_1, FULL_NAME_4);
-
-        // to test SqlStorage without Contacts and Sections
-        //Resume resume = new Resume(UUID_1, FULL_NAME_4);
-        storage.update(resume);
-        assertEquals(resume, storage.get(UUID_1));
+        Resume newResume = new Resume(UUID_1, "NewName");
+        newResume.addContact(ContactType.EMAIL, "mail1@google.com");
+        newResume.addContact(ContactType.SKYPE, "NewSkype");
+        newResume.addContact(ContactType.MOBILE_PHONE_NUMBER, "+7(921) 222-2222");
+        storage.update(newResume);
+        assertEquals(newResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -81,8 +84,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        assertSize(3);
-        assertEquals(Arrays.asList(R1, R2, R3), storage.getAllSorted());
+        List<Resume> list = storage.getAllSorted();
+        assertEquals(3, list.size());
+        List<Resume> expectedList = Arrays.asList(R1, R2, R3);
+        Collections.sort(expectedList);
+        assertEquals(expectedList, list);
     }
 
     @Test

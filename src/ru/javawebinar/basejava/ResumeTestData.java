@@ -22,14 +22,18 @@ public class ResumeTestData {
         }
 
         // Контакты
-        resume.addContact(ContactType.PHONE_NUMBER, "+7(921) 855-0482");
-        resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
-        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
-        resume.addContact(ContactType.LINKED_IN, "https://www.linkedin.com/in/gkislin");
-        resume.addContact(ContactType.GIT_HUB, "https://github.com/gkislin");
-        resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        resume.addContact(ContactType.HOME_PAGE, "http://gkislin.ru/");
-
+        if (fullName.equals("Name 4")) {
+            resume.addContact(ContactType.PHONE_NUMBER, "44444");
+            resume.addContact(ContactType.SKYPE, "Skype");
+        } else {
+            resume.addContact(ContactType.PHONE_NUMBER, "+7(921) 855-0482");
+            resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+            resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
+            resume.addContact(ContactType.LINKED_IN, "https://www.linkedin.com/in/gkislin");
+            resume.addContact(ContactType.GIT_HUB, "https://github.com/gkislin");
+            resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
+            resume.addContact(ContactType.HOME_PAGE, "http://gkislin.ru/");
+        }
 
         /*
         // Позиция
