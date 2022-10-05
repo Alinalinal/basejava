@@ -15,6 +15,10 @@ public class SqlHelper {
         this.connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 
+    public ConnectionFactory getConnectionFactory() {
+        return connectionFactory;
+    }
+
     public void execute(String sqlRequest) {
         execute(sqlRequest, PreparedStatement::execute);
     }

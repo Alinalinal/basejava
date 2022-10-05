@@ -1,9 +1,6 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.AbstractSection;
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.model.SectionType;
+import ru.javawebinar.basejava.model.*;
 
 import java.util.Map;
 
@@ -35,7 +32,6 @@ public class ResumeTestData {
             resume.addContact(ContactType.HOME_PAGE, "http://gkislin.ru/");
         }
 
-        /*
         // Позиция
         resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
@@ -67,6 +63,8 @@ public class ResumeTestData {
                 "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования",
                 "Родной русский, английский \"upper intermediate\""));
 
+        //----------------------------------------------HW15----------------------------------------------------------
+        /*
         // Опыт работы
         resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Java Online Projects", "http://javaops.ru/",

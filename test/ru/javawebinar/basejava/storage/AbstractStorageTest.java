@@ -6,14 +6,10 @@ import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -73,6 +69,12 @@ public abstract class AbstractStorageTest {
         newResume.addContact(ContactType.EMAIL, "mail1@google.com");
         newResume.addContact(ContactType.SKYPE, "NewSkype");
         newResume.addContact(ContactType.MOBILE_PHONE_NUMBER, "+7(921) 222-2222");
+        newResume.addSection(SectionType.OBJECTIVE, new TextSection("Новая позиция"));
+        newResume.addSection(SectionType.PERSONAL, new TextSection("Новые личные качества"));
+        newResume.addSection(SectionType.ACHIEVEMENT, new ListSection(new ArrayList<>(Arrays.asList
+                ("Новые достижения 1", "Новые достижения 2", "Новые достижения 3"))));
+        newResume.addSection(SectionType.QUALIFICATIONS, new ListSection(new ArrayList<>(Arrays.asList
+                ("Новая квалификация 1", "Новая квалификация 2", "Новая квалификация 3"))));
         storage.update(newResume);
         assertEquals(newResume, storage.get(UUID_1));
     }
