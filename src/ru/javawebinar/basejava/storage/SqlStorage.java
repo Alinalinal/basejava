@@ -16,7 +16,7 @@ public class SqlStorage implements Storage {
 
     private static final Logger LOG = Logger.getLogger(SqlStorage.class.getName());
 
-    private final SqlHelper sqlHelper;
+    private SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         this.sqlHelper = new SqlHelper(dbUrl, dbUser, dbPassword);

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <title>Resume</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            margin: auto;
+        }
+
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<table class="resume-table" style="width:500px">
+    <caption><h4>Resume table</h4></caption>
+    <tr style="height:40px">
+        <th>UUID</th>
+        <th>FULL NAME</th>
+    </tr>
+
+    <tr style="height:40px" th:each="resume : ${resumes}">
+        <td th:utext="${resume.uuid}">UUID</td>
+        <td th:utext="${resume.fullName}">FULL NAME</td>
+    </tr>
+</table>
+</body>
+</html>
