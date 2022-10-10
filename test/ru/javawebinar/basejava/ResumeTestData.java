@@ -2,12 +2,27 @@ package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
 
+import java.time.Month;
 import java.util.Map;
+import java.util.UUID;
 
 public class ResumeTestData {
-    public static void main(String[] args) {
-        Resume resume = getCompletedResume(null, "Григорий Кислин");
-        printResume(resume);
+
+    public static final String UUID_1 = UUID.randomUUID().toString();
+    public static final String UUID_2 = UUID.randomUUID().toString();
+    public static final String UUID_3 = UUID.randomUUID().toString();
+    public static final String UUID_4 = UUID.randomUUID().toString();
+
+    public static final Resume R1;
+    public static final Resume R2;
+    public static final Resume R3;
+    public static final Resume R4;
+
+    static {
+        R1 = getCompletedResume(UUID_1, "Name 1");
+        R2 = getCompletedResume(UUID_2, "Name 2");
+        R3 = getCompletedResume(UUID_3, "Name 3");
+        R4 = getCompletedResume(UUID_4, "Name 4");
     }
 
     public static Resume getCompletedResume(String uuid, String fullName) {
@@ -63,8 +78,6 @@ public class ResumeTestData {
                 "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования",
                 "Родной русский, английский \"upper intermediate\""));
 
-        //----------------------------------------------HW15----------------------------------------------------------
-        /*
         // Опыт работы
         resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Java Online Projects", "http://javaops.ru/",
@@ -119,8 +132,6 @@ public class ResumeTestData {
                 new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/",
                         new Organization.Position(1984, Month.SEPTEMBER, 1987, Month.JUNE,
                                 "Закончил с отличием", null))));
-         */
-
 
         return resume;
     }

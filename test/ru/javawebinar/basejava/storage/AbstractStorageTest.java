@@ -3,42 +3,21 @@ package ru.javawebinar.basejava.storage;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.Config;
-import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.*;
 
 import java.io.File;
+import java.time.Month;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static ru.javawebinar.basejava.ResumeTestData.*;
 
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
     protected Storage storage;
-
-    private static final String UUID_1 = UUID.randomUUID().toString();
-    private static final String UUID_2 = UUID.randomUUID().toString();
-    private static final String UUID_3 = UUID.randomUUID().toString();
-    private static final String UUID_4 = UUID.randomUUID().toString();
-
-    private static final String FULL_NAME_1 = "Name 1";
-    private static final String FULL_NAME_2 = "Name 2";
-    private static final String FULL_NAME_3 = "Name 3";
-    private static final String FULL_NAME_4 = "Name 4";
-
-    /*
-    private static final Resume R1 = new Resume(UUID_1, FULL_NAME_1);
-    private static final Resume R2 = new Resume(UUID_2, FULL_NAME_2);
-    private static final Resume R3 = new Resume(UUID_3, FULL_NAME_3);
-    private static final Resume R4 = new Resume(UUID_4, FULL_NAME_4);
-     */
-
-    private static final Resume R1 = ResumeTestData.getCompletedResume(UUID_1, FULL_NAME_1);
-    private static final Resume R2 = ResumeTestData.getCompletedResume(UUID_2, FULL_NAME_2);
-    private static final Resume R3 = ResumeTestData.getCompletedResume(UUID_3, FULL_NAME_3);
-    private static final Resume R4 = ResumeTestData.getCompletedResume(UUID_4, FULL_NAME_4);
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -75,6 +54,14 @@ public abstract class AbstractStorageTest {
                 ("Новые достижения 1", "Новые достижения 2", "Новые достижения 3"))));
         newResume.addSection(SectionType.QUALIFICATIONS, new ListSection(new ArrayList<>(Arrays.asList
                 ("Новая квалификация 1", "Новая квалификация 2", "Новая квалификация 3"))));
+        newResume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+                new Organization("Новая Организация", "http://новаяОрганизация.ua/",
+                        new Organization.Position(2013, Month.NOVEMBER, "Автор проекта.",
+                                "Создание, организация и проведение Java онлайн проектов и стажировок."))));
+        newResume.addSection(SectionType.EDUCATION, new OrganizationSection(
+                new Organization("Новое образование", "https://www.новоеОбразование.org/course/progfun",
+                        new Organization.Position(2013, Month.APRIL, 2013, Month.JUNE,
+                                "\"Functional Programming Principles in Scala\" by Martin Odersky", null))));
         storage.update(newResume);
         assertEquals(newResume, storage.get(UUID_1));
     }
