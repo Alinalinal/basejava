@@ -10,24 +10,27 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <tr>
-            <th>Имя</th>
-            <th>Email</th>
-            <th></th>
-            <th></th>
-        </tr>
-        <c:forEach items="${resumes}" var="resume">
-            <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume"/>
+    <form method="post" action="add" enctype="application/x-www-form-urlencoded">
+        <p align="center"><a href="resume?action=add">Добавить резюме</a></p>
+        <table align="center" border="1" cellpadding="8" cellspacing="0">
             <tr>
-                <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
-                <td><%=ContactType.EMAIL.toHtml(resume.getContact(ContactType.EMAIL))%>
-                </td>
-                <td><a href="resume?uuid=${resume.uuid}&action=delete"><img src="${pageContext.request.contextPath}/img/delete.png"/></a></td>
-                <td><a href="resume?uuid=${resume.uuid}&action=edit"><img src="${pageContext.request.contextPath}/img/pencil.png"/></a></td>
+                <th>Имя</th>
+                <th>Email</th>
+                <th></th>
+                <th></th>
             </tr>
-        </c:forEach>
-    </table>
+            <c:forEach items="${resumes}" var="resume">
+                <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume"/>
+                <tr>
+                    <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
+                    <td><%=ContactType.EMAIL.toHtml(resume.getContact(ContactType.EMAIL))%>
+                    </td>
+                    <td><a href="resume?uuid=${resume.uuid}&action=delete"><img src="img/delete.png"/></a></td>
+                    <td><a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/pencil.png"/></a></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

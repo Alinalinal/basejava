@@ -20,8 +20,13 @@ footer {
     text-align: center;
 }
 
+table {
+    text-align: left;
+    vertical-align: top;
+}
+
 dl {
-    background: none repeat scroll 0 0 #FAFAFA;
+    background: none repeat scroll 0 0 #FFFFFF;
     margin: 8px 0;
     padding: 0;
 }
@@ -29,6 +34,7 @@ dl {
 dt {
     display: inline-block;
     width: 170px;
+    vertical-align: top;
 }
 
 dd {

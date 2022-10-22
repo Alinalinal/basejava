@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.model;
 
+import ru.javawebinar.basejava.util.DateUtil;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -41,5 +43,40 @@ public class OrganizationSection extends AbstractSection {
     @Override
     public String toString() {
         return content.toString();
+    }
+
+    public String toHtml() {
+        StringBuilder sb = new StringBuilder();
+        for (Organization org : content) {
+            Link homePage = org.getHomePage();
+            sb.append("<h3>");
+            String url = homePage.getUrl();
+            if (!url.equals("")) {
+                sb.append("<a href=" + url + ">" + homePage.getName() + "</a></h3>");
+            } else {
+                sb.append(homePage.getName() + "</h3>");
+            }
+            for (Organization.Position pos : org.getPositions()) {
+                sb.append("<table><tr><td width=\"135\" valign=\"top\">" + DateUtil.format(pos.getStartDate()) + " - "
+                        + DateUtil.format(pos.getEndDate()) + "</td>" +
+                        "<td width=\"750\"><b>" + pos.getTitle() + "</b>");
+                String desc = pos.getDescription();
+                if (!desc.equals("")) {
+                    sb.append("</br>" + desc);
+                }
+                sb.append("</td></tr></table>");
+            }
+            /*for (Organization.Position pos : org.getPositions()) {
+                sb.append("<dl><dt>" + DateUtil.format(pos.getStartDate()) + " - " + DateUtil.format(pos.getEndDate())
+                        + "</dt>");
+                sb.append("<dd><b>" + pos.getTitle() + "</b>");
+                String desc = pos.getDescription();
+                if (!desc.equals("")) {
+                    sb.append("</br>" + desc);
+                }
+                sb.append("</dd></dl>");
+            }*/
+        }
+        return sb.toString();
     }
 }

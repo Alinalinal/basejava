@@ -40,6 +40,16 @@ public class ListSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return content.toString();
+        //return content.toString();
+        return String.join("", content);
+    }
+
+    public String toHtml() {
+        StringBuilder sb = new StringBuilder("<ul>\n");
+        for (String s : content) {
+            sb.append("<li>" + s + "</li>");
+        }
+        sb.append("</ul>\n");
+        return sb.toString();
     }
 }

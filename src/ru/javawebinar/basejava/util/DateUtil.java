@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 
 public class DateUtil {
     public static final LocalDate NOW = LocalDate.of(3000, 1, 1);
@@ -20,5 +21,13 @@ public class DateUtil {
 
     public static LocalDate readDataDate(DataInputStream dis) throws IOException {
         return of(dis.readInt(), Month.of(dis.readInt()));
+    }
+
+    public static String format(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
+        if (date.equals(NOW)) {
+            return "Ceйчас";
+        }
+        return date.format(formatter);
     }
 }
