@@ -66,16 +66,6 @@ public class OrganizationSection extends AbstractSection {
                 }
                 sb.append("</td></tr></table>");
             }
-            /*for (Organization.Position pos : org.getPositions()) {
-                sb.append("<dl><dt>" + DateUtil.format(pos.getStartDate()) + " - " + DateUtil.format(pos.getEndDate())
-                        + "</dt>");
-                sb.append("<dd><b>" + pos.getTitle() + "</b>");
-                String desc = pos.getDescription();
-                if (!desc.equals("")) {
-                    sb.append("</br>" + desc);
-                }
-                sb.append("</dd></dl>");
-            }*/
         }
         return sb.toString();
     }
