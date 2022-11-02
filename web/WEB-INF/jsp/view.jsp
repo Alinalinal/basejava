@@ -1,5 +1,7 @@
 <%@ page import="ru.javawebinar.basejava.model.ListSection" %>
 <%@ page import="ru.javawebinar.basejava.model.OrganizationSection" %>
+<%@ page import="ru.javawebinar.basejava.model.TextSection" %>
+<%@ page import="ru.javawebinar.basejava.util.DateUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -22,35 +24,51 @@
     <hr/>
     </p>
     <c:forEach var="sectionEntry" items="${resume.sections}">
-    <jsp:useBean id="sectionEntry" type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType,
+        <jsp:useBean id="sectionEntry" type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType,
                     ru.javawebinar.basejava.model.AbstractSection>"/>
-    <c:choose>
-    <c:when test="${sectionEntry.key == 'OBJECTIVE'}">
-    <h2>${sectionEntry.key.title}</h2>
-    <h3>${sectionEntry.value}<h3/>
-        </c:when>
-        <c:when test="${sectionEntry.key == 'PERSONAL'}">
-        <h2>${sectionEntry.key.title}</h2>
-            ${sectionEntry.value}
-        </c:when>
-        <c:when test="${sectionEntry.key == 'ACHIEVEMENT'}">
-        <h2>${sectionEntry.key.title}</h2>
-                <%=((ListSection) sectionEntry.getValue()).toHtml()%><br/>
-        </c:when>
-        <c:when test="${sectionEntry.key == 'QUALIFICATIONS'}">
-        <h2>${sectionEntry.key.title}</h2>
-                <%=((ListSection) sectionEntry.getValue()).toHtml()%><br/>
-        </c:when>
-        <c:when test="${sectionEntry.key == 'EXPERIENCE'}">
-        <h2>${sectionEntry.key.title}</h2>
-                <%=((OrganizationSection) sectionEntry.getValue()).toHtml()%><br/>
-        </c:when>
-        <c:when test="${sectionEntry.key == 'EDUCATION'}">
-        <h2>${sectionEntry.key.title}</h2>
-                <%=((OrganizationSection) sectionEntry.getValue()).toHtml()%><br/>
-        </c:when>
+        <c:set var="type" value="${sectionEntry.key}"/>
+        <c:set var="section" value="${sectionEntry.value}"/>
+        <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
+        <div>${type.title}</div>
+        <c:choose>
+            <c:when test="${type == 'OBJECTIVE' || type == 'PERSONAL'}">
+                <div><%=((TextSection) section).getContent()%>
+                </div>
+            </c:when>
+            <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
+                <ul>
+                    <c:forEach var="item" items="<%=((ListSection) section).getContent()%>">
+                        <li>${item}</li>
+                    </c:forEach>
+                </ul>
+            </c:when>
+            <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
+                <c:forEach var="organization" items="<%=((OrganizationSection) section).getContent()%>">
+                    <c:choose>
+                        <c:when test="${empty organization.homePage.url}">
+                            <div>${organization.homePage.name}</div>
+                        </c:when>
+                        <c:otherwise>
+                            <div><a href="${organization.homePage.url}">${organization.homePage.name}</a></div>
+                        </c:otherwise>
+                    </c:choose>
+                    <c:forEach var="position" items="${organization.positions}">
+                        <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
+                        <div><%=DateUtil.format(position.getStartDate())%> - <%=DateUtil.format(position.getEndDate())%>
+                        </div>
+                        <div>${position.title}</div>
+                        <c:choose>
+                            <c:when test="${empty position.description}">
+                            </c:when>
+                            <c:otherwise>
+                                <div>${position.description}</div>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </c:forEach>
+            </c:when>
         </c:choose>
-        </c:forEach>
+    </c:forEach>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

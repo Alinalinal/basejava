@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 public class DateUtil {
     public static final LocalDate NOW = LocalDate.of(3000, 1, 1);
@@ -34,7 +33,7 @@ public class DateUtil {
     }
 
     public static LocalDate format(String date) {
-        if (date.trim().equals("Сейчас".toLowerCase(Locale.ROOT))) {
+        if (date == null || date.trim().length() == 0 || date.trim().equals("Сейчас")) {
             return NOW;
         }
         YearMonth yearMonth = YearMonth.parse(date.trim(), FORMATTER);

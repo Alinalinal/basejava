@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class ListSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
+    public static final ListSection EMPTY = new ListSection("");
 
     private List<String> content;
 
@@ -41,14 +42,5 @@ public class ListSection extends AbstractSection {
     @Override
     public String toString() {
         return String.join("", content);
-    }
-
-    public String toHtml() {
-        StringBuilder sb = new StringBuilder("<ul>\n");
-        for (String s : content) {
-            sb.append("<li>" + s + "</li>");
-        }
-        sb.append("</ul>\n");
-        return sb.toString();
     }
 }

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -29,79 +28,69 @@ public class ResumeServlet extends HttpServlet {
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName").trim();
         int uuidLength = uuid.trim().length();
-        if (Pattern.matches("^[А-Яа-яa-zA-Z]+[\\s[А-Яа-яa-zA-Z]*]*", fullName)) {
-            Resume r;
-            if (uuidLength == 0) {
-                r = new Resume(fullName);
+        Resume r;
+        if (uuidLength == 0) {
+            r = new Resume(fullName);
+        } else {
+            r = storage.get(uuid);
+            r.setFullName(fullName);
+        }
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (value == null || value.trim().length() == 0) {
+                r.getContacts().remove(type);
             } else {
-                r = storage.get(uuid);
-                r.setFullName(fullName);
+                r.addContact(type, value);
             }
-            for (ContactType type : ContactType.values()) {
-                String value = request.getParameter(type.name());
-                if (value == null || value.trim().length() == 0) {
-                    r.getContacts().remove(type);
-                } else {
-                    r.addContact(type, value);
-                }
-            }
-            for (SectionType type : SectionType.values()) {
-                String value = request.getParameter(type.name());
-                if (value == null || value.trim().length() != 0) {
-                    r.getSections().remove(type);
-                } else {
-                    switch (type) {
-                        case OBJECTIVE:
-                        case PERSONAL:
-                            r.addSection(type, new TextSection(value));
-                            break;
-                        case ACHIEVEMENT:
-                        case QUALIFICATIONS:
-                            String[] arr = value.split("\n");
-                            List<String> list = new ArrayList<>();
-                            for (String s : arr) {
-                                if (s.trim().length() != 0) {
-                                    list.add(s + "\n");
-                                }
-                            }
-                            r.addSection(type, new ListSection(list));
-                            break;
-                        case EXPERIENCE:
-                        case EDUCATION:
-                            String[] names = request.getParameterValues(String.valueOf(type));
-                            String[] urls = request.getParameterValues(type + "url");
-                            List<Organization> organizations = new ArrayList<>();
-                            for (int i = 0; i < names.length; i++) {
-                                String name = names[i];
-                                Link link = new Link(name, urls[i]);
-                                if (name != null || name.trim().length() != 0) {
-                                    List<Organization.Position> positions = new ArrayList<>();
-                                    String prefix = String.valueOf(type) + i;
-                                    String[] startDates = request.getParameterValues(prefix + "startDate");
-                                    String[] endDates = request.getParameterValues(prefix + "endDate");
-                                    String[] titles = request.getParameterValues(prefix + "header");
-                                    String[] descriptions = request.getParameterValues(prefix + "description");
-                                    for (int j = 0; j < titles.length; j++) {
-                                        String title = titles[j];
-                                        if (title != null || title.trim().length() != 0) {
-                                            positions.add(new Organization.Position(DateUtil.format(startDates[j]),
-                                                    DateUtil.format(endDates[j]), titles[j],
-                                                    type == SectionType.EXPERIENCE ? descriptions[j] : ""));
-                                        }
+        }
+        for (SectionType type : SectionType.values()) {
+            String value = request.getParameter(type.name());
+            if (value == null || value.trim().length() == 0) {
+                r.getSections().remove(type);
+            } else {
+                switch (type) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        r.addSection(type, new TextSection(value));
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        r.addSection(type, new ListSection(value.split("\n")));
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        String[] names = request.getParameterValues(type.name());
+                        String[] urls = request.getParameterValues(type + "url");
+                        List<Organization> organizations = new ArrayList<>();
+                        for (int i = 0; i < names.length; i++) {
+                            String name = names[i];
+                            Link link = new Link(name, urls[i]);
+                            if (name != null || name.trim().length() != 0) {
+                                List<Organization.Position> positions = new ArrayList<>();
+                                String prefix = type.name() + i;
+                                String[] startDates = request.getParameterValues(prefix + "startDate");
+                                String[] endDates = request.getParameterValues(prefix + "endDate");
+                                String[] titles = request.getParameterValues(prefix + "title");
+                                String[] descriptions = request.getParameterValues(prefix + "description");
+                                for (int j = 0; j < titles.length; j++) {
+                                    String title = titles[j];
+                                    if (title != null || title.trim().length() != 0) {
+                                        positions.add(new Organization.Position(DateUtil.format(startDates[j]),
+                                                DateUtil.format(endDates[j]), title, descriptions[j]));
                                     }
-                                    organizations.add(new Organization(link, positions));
                                 }
+                                organizations.add(new Organization(link, positions));
                             }
-                            r.addSection(type, new OrganizationSection(organizations));
-                            break;
-                    }
+                        }
+                        r.addSection(type, new OrganizationSection(organizations));
+                        break;
                 }
             }
-            if (uuidLength == 0) {
-                storage.save(r);
-            } else {
-                storage.update(r);
-            }
+        }
+        if (uuidLength == 0) {
+            storage.save(r);
+        } else {
+            storage.update(r);
         }
         response.sendRedirect("resume");
     }
@@ -122,11 +111,45 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "view":
-            case "edit":
                 r = storage.get(uuid);
                 break;
+            case "edit":
+                r = storage.get(uuid);
+                for (SectionType type : SectionType.values()) {
+                    AbstractSection section = r.getSection(type);
+                    switch (type) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            if (section == null) {
+                                section = TextSection.EMPTY;
+                            }
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATIONS:
+                            if (section == null) {
+                                section = ListSection.EMPTY;
+                            }
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            OrganizationSection orgSection = (OrganizationSection) section;
+                            List<Organization> organizations = new ArrayList<>();
+                            organizations.add(Organization.EMPTY);
+                            if (orgSection != null) {
+                                for (Organization organization : orgSection.getContent()) {
+                                    List<Organization.Position> positions = new ArrayList<>();
+                                    positions.add(Organization.Position.EMPTY);
+                                    positions.addAll(organization.getPositions());
+                                    organizations.add(new Organization(organization.getHomePage(), positions));
+                                }
+                            }
+                            section = new OrganizationSection(organizations);
+                            break;
+                    }
+                }
+                break;
             case "add":
-                r = new Resume();
+                r = Resume.EMPTY;
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
