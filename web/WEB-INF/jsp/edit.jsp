@@ -43,13 +43,9 @@
                 <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
                     <br/>
 
-                    <c:forEach var="organization" items="<%=((OrganizationSection) section).getContent()%>"
-                               varStatus="counter">
-                        <c:if test="${counter.index == 0}">
-                            <%-- Добавить новую организацию --%>
-                        </c:if>
+                    <c:forEach var="organization" items="<%=((OrganizationSection) section).getContent()%>">
+                        <c:set var="orgCounter" value="${0}"/>
 
-                        <%-- <jsp:useBean id="organization" type="ru.javawebinar.basejava.model.Organization"/> --%>
                         <input type="text" name="${type}" placeholder="Название" size=50
                                value="${organization.homePage.name}">
                         <input type="text" name="${type}url" placeholder="Ссылка" size=50
@@ -59,17 +55,18 @@
                             <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
 
                             <div>
-                                <input name="${type}${counter.index}startDate" placeholder="Начало, ММ/ГГГГ"
+                                <input name="${type}${orgCounter}startDate" placeholder="Начало, ММ/ГГГГ"
                                        size=50 value="<%=DateUtil.format(position.getStartDate())%>">
-                                <input name="${type}${counter.index}endDate" placeholder="Окончание, ММ/ГГГГ" size=50
+                                <input name="${type}${orgCounter}endDate" placeholder="Окончание, ММ/ГГГГ" size=50
                                        value="<%=DateUtil.format(position.getEndDate())%>">
                             </div>
 
-                            <input type="text" name="${type}${counter.index}title" placeholder="Позиция" size=50
+                            <input type="text" name="${type}${orgCounter}title" placeholder="Позиция" size=50
                                    value="${position.title}">
 
-                            <textarea name="${type}${counter.index}description" placeholder="Описание" cols="95"
+                            <textarea name="${type}${orgCounter}description" placeholder="Описание" cols="95"
                                       rows="5">${position.description}</textarea>
+                            <c:set var="orgCounter" value="${orgCounter + 1}"/>
                             <br/>
                             <hr/>
                         </c:forEach>

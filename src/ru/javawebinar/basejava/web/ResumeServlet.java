@@ -55,7 +55,13 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        r.addSection(type, new ListSection(value.split("\n")));
+                        List<String> content = new ArrayList<>();
+                        for (String s : value.split("\n")) {
+                            if (!s.trim().equals("")) {
+                                content.add(s);
+                            }
+                        }
+                        r.addSection(type, new ListSection(content));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -146,6 +152,7 @@ public class ResumeServlet extends HttpServlet {
                             section = new OrganizationSection(organizations);
                             break;
                     }
+                    r.addSection(type, section);
                 }
                 break;
             case "add":

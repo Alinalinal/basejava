@@ -32,8 +32,7 @@
         <div>${type.title}</div>
         <c:choose>
             <c:when test="${type == 'OBJECTIVE' || type == 'PERSONAL'}">
-                <div><%=((TextSection) section).getContent()%>
-                </div>
+                <div><%=((TextSection) section).getContent()%></div>
             </c:when>
             <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
                 <ul>
