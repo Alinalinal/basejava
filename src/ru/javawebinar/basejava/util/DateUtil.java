@@ -26,16 +26,12 @@ public class DateUtil {
     }
 
     public static String format(LocalDate date) {
-        if (date == null) {
-            return "";
-        }
+        if (date == null) return "";
         return date.equals(NOW) ? "Ceйчас" : date.format(FORMATTER);
     }
 
     public static LocalDate format(String date) {
-        if (date.trim().equals("Сейчас") || date.trim().length() == 0) {
-            return NOW;
-        }
+        if (HtmlUtil.isEmpty(date) || date.trim().equals("Сейчас")) return NOW;
         YearMonth yearMonth = YearMonth.parse(date.trim(), FORMATTER);
         return LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
     }

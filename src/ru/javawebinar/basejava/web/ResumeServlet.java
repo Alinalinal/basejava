@@ -4,6 +4,7 @@ import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.storage.Storage;
 import ru.javawebinar.basejava.util.DateUtil;
+import ru.javawebinar.basejava.util.HtmlUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -37,10 +38,10 @@ public class ResumeServlet extends HttpServlet {
         }
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
-            if (value == null || value.trim().length() == 0) {
+            if (HtmlUtil.isEmpty(value)) {
                 r.getContacts().remove(type);
             } else {
-                r.addContact(type, value);
+                r.setContact(type, value);
             }
         }
         for (SectionType type : SectionType.values()) {
@@ -48,16 +49,16 @@ public class ResumeServlet extends HttpServlet {
                 case OBJECTIVE:
                 case PERSONAL:
                     String value1 = request.getParameter(type.name());
-                    if (value1 == null || value1.trim().length() == 0) {
+                    if (HtmlUtil.isEmpty(value1)) {
                         r.getSections().remove(type);
                     } else {
-                        r.addSection(type, new TextSection(value1));
+                        r.setSection(type, new TextSection(value1));
                     }
                     break;
                 case ACHIEVEMENT:
                 case QUALIFICATIONS:
                     String value2 = request.getParameter(type.name());
-                    if (value2 == null || value2.trim().length() == 0) {
+                    if (HtmlUtil.isEmpty(value2)) {
                         r.getSections().remove(type);
                     } else {
                         List<String> content = new ArrayList<>();
@@ -66,7 +67,7 @@ public class ResumeServlet extends HttpServlet {
                                 content.add(s);
                             }
                         }
-                        r.addSection(type, new ListSection(content));
+                        r.setSection(type, new ListSection(content));
                     }
                     break;
                 case EXPERIENCE:
@@ -74,18 +75,20 @@ public class ResumeServlet extends HttpServlet {
                     List<Organization> organizations = new ArrayList<>();
                     int orgCount = Integer.parseInt(request.getParameter(type.name() + "orgCount"));
                     for (int i = 0; i < orgCount; i++) {
-                        String name = request.getParameter(type.name() + i + "name");
+                        String prefix1 = type.name() + i;
+                        String name = request.getParameter(prefix1 + "name");
                         if (name != null && name.trim().length() != 0) {
-                            String url = request.getParameter(type.name() + i + "url");
+                            String url = request.getParameter(prefix1 + "url");
                             Link link = new Link(name, url);
-                            int posCount = Integer.parseInt(request.getParameter(type.name() + i + "posCount"));
+                            int posCount = Integer.parseInt(request.getParameter(prefix1 + "posCount"));
                             List<Organization.Position> positions = new ArrayList<>();
                             for (int j = 0; j < posCount; j++) {
-                                String startDate = request.getParameter(type.name() + i + "_" + j + "startDate");
-                                String endDate = request.getParameter(type.name() + i + "_" + j + "endDate");
-                                String title = request.getParameter(type.name() + i + "_" + j + "title");
-                                String description = request.getParameter(type.name() + i + "_" + j + "description");
+                                String prefix2 = prefix1 + "_" + j;
+                                String startDate = request.getParameter(prefix2 + "startDate");
+                                String endDate = request.getParameter(prefix2 + "endDate");
+                                String title = request.getParameter(prefix2 + "title");
                                 if (title != null && title.trim().length() != 0) {
+                                    String description = request.getParameter(prefix2 + "description");
                                     positions.add(new Organization.Position(DateUtil.format(startDate),
                                             DateUtil.format(endDate), title, description));
                                 }
@@ -96,7 +99,7 @@ public class ResumeServlet extends HttpServlet {
                     if (organizations.size() == 0) {
                         r.getSections().remove(type);
                     } else {
-                        r.addSection(type, new OrganizationSection(organizations));
+                        r.setSection(type, new OrganizationSection(organizations));
                     }
                     break;
             }
@@ -160,7 +163,7 @@ public class ResumeServlet extends HttpServlet {
                             section = new OrganizationSection(organizations);
                             break;
                     }
-                    r.addSection(type, section);
+                    r.setSection(type, section);
                 }
                 break;
             case "add":

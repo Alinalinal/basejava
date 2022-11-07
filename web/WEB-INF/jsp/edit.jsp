@@ -2,6 +2,7 @@
 <%@ page import="ru.javawebinar.basejava.model.SectionType" %>
 <%@ page import="ru.javawebinar.basejava.model.OrganizationSection" %>
 <%@ page import="ru.javawebinar.basejava.util.DateUtil" %>
+<%@ page import="ru.javawebinar.basejava.model.ListSection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -27,7 +28,6 @@
 
         <hr/>
 
-        <div>Секции:</div>
         <c:forEach var="type" items="<%=SectionType.values()%>">
             <c:set var="section" value="${resume.getSection(type)}"/>
             <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
@@ -38,7 +38,8 @@
                     <textarea name="${type.name()}" cols="95" rows="3"><%=section%></textarea>
                 </c:when>
                 <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
-                    <textarea name="${type.name()}" cols="95" rows="5"><%=section.toString()%></textarea>
+                    <textarea name="${type.name()}" cols="95" rows="5">
+                        <%=String.join("\n", ((ListSection) section).getContent())%></textarea>
                 </c:when>
                 <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
                     <br/>

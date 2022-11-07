@@ -19,12 +19,12 @@ public class Resume implements Comparable<Resume>, Serializable {
     public static final Resume EMPTY = new Resume();
 
     static {
-        EMPTY.addSection(SectionType.OBJECTIVE, TextSection.EMPTY);
-        EMPTY.addSection(SectionType.PERSONAL, TextSection.EMPTY);
-        EMPTY.addSection(SectionType.ACHIEVEMENT, ListSection.EMPTY);
-        EMPTY.addSection(SectionType.QUALIFICATIONS, ListSection.EMPTY);
-        EMPTY.addSection(SectionType.EXPERIENCE, new OrganizationSection(Organization.EMPTY));
-        EMPTY.addSection(SectionType.EDUCATION, new OrganizationSection(Organization.EMPTY));
+        EMPTY.setSection(SectionType.OBJECTIVE, TextSection.EMPTY);
+        EMPTY.setSection(SectionType.PERSONAL, TextSection.EMPTY);
+        EMPTY.setSection(SectionType.ACHIEVEMENT, ListSection.EMPTY);
+        EMPTY.setSection(SectionType.QUALIFICATIONS, ListSection.EMPTY);
+        EMPTY.setSection(SectionType.EXPERIENCE, new OrganizationSection(Organization.EMPTY));
+        EMPTY.setSection(SectionType.EDUCATION, new OrganizationSection(Organization.EMPTY));
     }
 
     // Unique identifier
@@ -75,11 +75,11 @@ public class Resume implements Comparable<Resume>, Serializable {
         return sections.get(type);
     }
 
-    public final void addContact(ContactType type, String value) {
+    public final void setContact(ContactType type, String value) {
         contacts.put(type, value);
     }
 
-    public final void addSection(SectionType type, AbstractSection section) {
+    public final void setSection(SectionType type, AbstractSection section) {
         sections.put(type, section);
     }
 

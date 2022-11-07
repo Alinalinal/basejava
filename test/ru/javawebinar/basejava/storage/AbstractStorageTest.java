@@ -46,21 +46,21 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume newResume = new Resume(UUID_1, "NewName");
-        newResume.addContact(ContactType.EMAIL, "mail1@google.com");
-        newResume.addContact(ContactType.SKYPE, "NewSkype");
-        newResume.addContact(ContactType.MOBILE_PHONE_NUMBER, "+7(921) 222-2222");
-        newResume.addSection(SectionType.OBJECTIVE, new TextSection("Новая позиция"));
-        newResume.addSection(SectionType.PERSONAL, new TextSection("Новые личные качества"));
-        newResume.addSection(SectionType.ACHIEVEMENT, new ListSection(new ArrayList<>(Arrays.asList
+        newResume.setContact(ContactType.EMAIL, "mail1@google.com");
+        newResume.setContact(ContactType.SKYPE, "NewSkype");
+        newResume.setContact(ContactType.MOBILE_PHONE_NUMBER, "+7(921) 222-2222");
+        newResume.setSection(SectionType.OBJECTIVE, new TextSection("Новая позиция"));
+        newResume.setSection(SectionType.PERSONAL, new TextSection("Новые личные качества"));
+        newResume.setSection(SectionType.ACHIEVEMENT, new ListSection(new ArrayList<>(Arrays.asList
                 ("Новые достижения 1", "Новые достижения 2", "Новые достижения 3"))));
-        newResume.addSection(SectionType.QUALIFICATIONS, new ListSection(new ArrayList<>(Arrays.asList
+        newResume.setSection(SectionType.QUALIFICATIONS, new ListSection(new ArrayList<>(Arrays.asList
                 ("Новая квалификация 1", "Новая квалификация 2", "Новая квалификация 3"))));
-        newResume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+        newResume.setSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Новая Организация", "http://новаяОрганизация.ua/",
                         new Organization.Position(LocalDate.of(2013, Month.NOVEMBER, 1),
                                 LocalDate.of(2022, Month.DECEMBER, 1), "Автор проекта.",
                                 "Создание, организация и проведение Java онлайн проектов и стажировок."))));
-        newResume.addSection(SectionType.EDUCATION, new OrganizationSection(
+        newResume.setSection(SectionType.EDUCATION, new OrganizationSection(
                 new Organization("Новое образование", "https://www.новоеОбразование.org/course/progfun",
                         new Organization.Position(LocalDate.of(2013, Month.APRIL, 1),
                                 LocalDate.of(2013, Month.JUNE, 1),

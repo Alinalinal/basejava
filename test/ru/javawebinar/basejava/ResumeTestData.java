@@ -36,26 +36,26 @@ public class ResumeTestData {
 
         // Контакты
         if (fullName.equals("Name 4")) {
-            resume.addContact(ContactType.PHONE_NUMBER, "44444");
-            resume.addContact(ContactType.SKYPE, "Skype");
+            resume.setContact(ContactType.PHONE_NUMBER, "44444");
+            resume.setContact(ContactType.SKYPE, "Skype");
         } else {
-            resume.addContact(ContactType.PHONE_NUMBER, "+7(921) 855-0482");
-            resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
-            resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
-            resume.addContact(ContactType.LINKED_IN, "https://www.linkedin.com/in/gkislin");
-            resume.addContact(ContactType.GIT_HUB, "https://github.com/gkislin");
-            resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-            resume.addContact(ContactType.HOME_PAGE, "http://gkislin.ru/");
+            resume.setContact(ContactType.PHONE_NUMBER, "+7(921) 855-0482");
+            resume.setContact(ContactType.SKYPE, "skype:grigory.kislin");
+            resume.setContact(ContactType.EMAIL, "gkislin@yandex.ru");
+            resume.setContact(ContactType.LINKED_IN, "https://www.linkedin.com/in/gkislin");
+            resume.setContact(ContactType.GIT_HUB, "https://github.com/gkislin");
+            resume.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
+            resume.setContact(ContactType.HOME_PAGE, "http://gkislin.ru/");
         }
 
         // Позиция
-        resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+        resume.setSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
         // Личные качества
-        resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
+        resume.setSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
 
         // Достижения
-        resume.addSection(SectionType.ACHIEVEMENT, new ListSection("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.\n",
+        resume.setSection(SectionType.ACHIEVEMENT, new ListSection("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.\n",
                 "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.\n",
                 "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.\n",
                 "Реализация c нуля Rich Internet Application приложения на стеке технологий JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.\n",
@@ -63,7 +63,7 @@ public class ResumeTestData {
                 "Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.\n"));
 
         // Квалификация
-        resume.addSection(SectionType.QUALIFICATIONS, new ListSection("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n",
+        resume.setSection(SectionType.QUALIFICATIONS, new ListSection("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n",
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce\n",
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle\n",
                 "MySQL, SQLite, MS SQL, HSQLDB\n",
@@ -80,7 +80,7 @@ public class ResumeTestData {
                 "Родной русский, английский \"upper intermediate\"\n"));
 
         // Опыт работы
-        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+        resume.setSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Java Online Projects", "http://javaops.ru/",
                         new Organization.Position(LocalDate.of(2013, Month.OCTOBER, 1),
                                 LocalDate.of(2020, Month.OCTOBER, 1), "Автор проекта.",
@@ -116,7 +116,7 @@ public class ResumeTestData {
                                 "Инженер по аппаратному и программному тестированию", "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM)."))));
 
         // Образование
-        resume.addSection(SectionType.EDUCATION, new OrganizationSection(
+        resume.setSection(SectionType.EDUCATION, new OrganizationSection(
                 new Organization("Coursera", "https://www.coursera.org/course/progfun",
                         new Organization.Position(LocalDate.of(2013, Month.MARCH, 1),
                                 LocalDate.of(2013, Month.MAY, 1),

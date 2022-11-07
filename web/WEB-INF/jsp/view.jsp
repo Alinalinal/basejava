@@ -2,6 +2,7 @@
 <%@ page import="ru.javawebinar.basejava.model.OrganizationSection" %>
 <%@ page import="ru.javawebinar.basejava.model.TextSection" %>
 <%@ page import="ru.javawebinar.basejava.util.DateUtil" %>
+<%@ page import="ru.javawebinar.basejava.util.HtmlUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -54,16 +55,11 @@
                     </c:choose>
                     <c:forEach var="position" items="${organization.positions}">
                         <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
-                        <div><%=DateUtil.format(position.getStartDate())%> - <%=DateUtil.format(position.getEndDate())%>
+                        <div><%=HtmlUtil.formatDates(position)%>
                         </div>
                         <div>${position.title}</div>
-                        <c:choose>
-                            <c:when test="${empty position.description}">
-                            </c:when>
-                            <c:otherwise>
-                                <div>${position.description}</div>
-                            </c:otherwise>
-                        </c:choose>
+                        <br/>
+                        <div>${position.description}</div>
                     </c:forEach>
                 </c:forEach>
             </c:when>
