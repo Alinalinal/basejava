@@ -11,7 +11,7 @@
 <jsp:include page="fragments/header.jsp"/>
 <section>
     <form method="post" action="add" enctype="application/x-www-form-urlencoded">
-        <p align="center"><a href="resume?action=add">Добавить резюме</a></p>
+        <p align="center"><a href="resume?action=add"><img src="img/add.png"/>Добавить резюме</a></p>
         <div>
             <table align="center" border="1" cellpadding="8" cellspacing="0">
                 <tr>
