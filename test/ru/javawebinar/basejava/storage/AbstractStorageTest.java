@@ -8,6 +8,7 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.*;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 
@@ -56,11 +57,13 @@ public abstract class AbstractStorageTest {
                 ("Новая квалификация 1", "Новая квалификация 2", "Новая квалификация 3"))));
         newResume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Новая Организация", "http://новаяОрганизация.ua/",
-                        new Organization.Position(2013, Month.NOVEMBER, "Автор проекта.",
+                        new Organization.Position(LocalDate.of(2013, Month.NOVEMBER, 1),
+                                LocalDate.of(2022, Month.DECEMBER, 1), "Автор проекта.",
                                 "Создание, организация и проведение Java онлайн проектов и стажировок."))));
         newResume.addSection(SectionType.EDUCATION, new OrganizationSection(
                 new Organization("Новое образование", "https://www.новоеОбразование.org/course/progfun",
-                        new Organization.Position(2013, Month.APRIL, 2013, Month.JUNE,
+                        new Organization.Position(LocalDate.of(2013, Month.APRIL, 1),
+                                LocalDate.of(2013, Month.JUNE, 1),
                                 "\"Functional Programming Principles in Scala\" by Martin Odersky", null))));
         storage.update(newResume);
         assertEquals(newResume, storage.get(UUID_1));

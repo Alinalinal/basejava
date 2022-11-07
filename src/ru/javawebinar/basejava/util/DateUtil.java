@@ -33,7 +33,7 @@ public class DateUtil {
     }
 
     public static LocalDate format(String date) {
-        if (date == null || date.trim().length() == 0 || date.trim().equals("Сейчас")) {
+        if (date.trim().equals("Сейчас") || date.trim().length() == 0) {
             return NOW;
         }
         YearMonth yearMonth = YearMonth.parse(date.trim(), FORMATTER);
