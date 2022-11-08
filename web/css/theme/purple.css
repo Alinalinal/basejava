@@ -1,0 +1,27 @@
+:root {
+    --header-background: #7b8699;
+    --header-text-color: #ede5da;
+    --header-arrow-background: #ede5da;
+    --footer-text-color: #ede5da;
+    --footer-anchor-color: #ede5da;
+    --anchor-color: #ede5da;
+    --text-color: #ede5da;
+    --add-resume-text-color: #ede5da;
+    --body-background: #68728a;
+    --table-header-text-color: #ede5da;
+    --table-header-background: #bf9085;
+    --table-text-color: #ede5da;
+    --table-odd-row-background: #bf9085;
+    --table-even-row-background: #dcb6a8;
+    --table-shadow-color: #464d64;
+    --input-field-background: #bf9085;
+    --input-field-shadow: #bf9085;
+    --spacer-background: #E0E4EA;
+    --submit-button-color: #ede5da;
+    --submit-button-background: #68728a;
+    --save-button-background: #36593b;
+    --cancel-button-color: #AE515A;
+    --button-text-color: #ede5da;
+    --theme-text-color: #ede5da;
+    --contact-link-color: #6e3838;
+}
