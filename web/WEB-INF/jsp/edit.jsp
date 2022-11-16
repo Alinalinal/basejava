@@ -90,9 +90,15 @@
                                        name="${type.name()}${orgCount.index}_${posCount.index}title"
                                        placeholder="Позиция" size=75 value="${position.title}">
 
-                                <textarea class="field"
-                                          name="${type.name()}${orgCount.index}_${posCount.index}description"
-                                          placeholder="Описание">${position.description}</textarea>
+                                <c:choose>
+                                    <c:when test="${type == 'EXPERIENCE'}">
+                                        <textarea class="field"
+                                                  name="${type.name()}${orgCount.index}_${posCount.index}description"
+                                                  placeholder="Описание">${position.description}</textarea>
+                                    </c:when>
+                                    <c:otherwise>
+                                    </c:otherwise>
+                                </c:choose>
 
                             </c:forEach>
                         </c:forEach>

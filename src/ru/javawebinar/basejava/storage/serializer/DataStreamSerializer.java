@@ -1,9 +1,10 @@
 package ru.javawebinar.basejava.storage.serializer;
 
 import ru.javawebinar.basejava.model.*;
-import ru.javawebinar.basejava.util.DateUtil;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -41,8 +42,8 @@ public class DataStreamSerializer implements StreamSerializer {
                                     String url = link.getUrl();
                                     dos.writeUTF(url == null ? "null" : url);
                                     writeCollection(organization.getPositions(), dos, position -> {
-                                        DateUtil.writeAsData(dos, position.getStartDate());
-                                        DateUtil.writeAsData(dos, position.getEndDate());
+                                        writeAsData(dos, position.getStartDate());
+                                        writeAsData(dos, position.getEndDate());
                                         dos.writeUTF(position.getTitle());
                                         String description = position.getDescription();
                                         dos.writeUTF(description == null ? "null" : description);
@@ -52,6 +53,11 @@ public class DataStreamSerializer implements StreamSerializer {
                 }
             });
         }
+    }
+
+    public static void writeAsData(DataOutputStream dos, LocalDate date) throws IOException {
+        dos.writeInt(date.getYear());
+        dos.writeInt(date.getMonthValue());
     }
 
     @Override
@@ -74,13 +80,17 @@ public class DataStreamSerializer implements StreamSerializer {
                     case EDUCATION:
                         resume.setSection(sectionType, new OrganizationSection(readCollection(dis, () ->
                                 new Organization(new Link(dis.readUTF(), dis.readUTF()), readCollection(dis, () ->
-                                        new Organization.Position(DateUtil.readDataDate(dis),
-                                                DateUtil.readDataDate(dis), dis.readUTF(), dis.readUTF()))))));
+                                        new Organization.Position(readDataDate(dis), readDataDate(dis), dis.readUTF(),
+                                                dis.readUTF()))))));
                         break;
                 }
             });
             return resume;
         }
+    }
+
+    public static LocalDate readDataDate(DataInputStream dis) throws IOException {
+        return LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1);
     }
 
     @FunctionalInterface

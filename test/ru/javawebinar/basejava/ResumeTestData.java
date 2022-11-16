@@ -1,6 +1,7 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.util.DateUtil;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -9,8 +10,8 @@ import java.util.UUID;
 
 public class ResumeTestData {
 
-    public static final String UUID_1 = UUID.randomUUID().toString();
-    public static final String UUID_2 = UUID.randomUUID().toString();
+    public static final String UUID_1 = "11111111-1111-1111-1111-111111111111";
+    public static final String UUID_2 = "22222222-2222-2222-2222-222222222222";
     public static final String UUID_3 = UUID.randomUUID().toString();
     public static final String UUID_4 = UUID.randomUUID().toString();
 
@@ -20,13 +21,13 @@ public class ResumeTestData {
     public static final Resume R4;
 
     static {
-        R1 = getCompletedResume(UUID_1, "Name One");
-        R2 = getCompletedResume(UUID_2, "Name Two");
-        R3 = getCompletedResume(UUID_3, "Name Three");
-        R4 = getCompletedResume(UUID_4, "Name Four");
+        R1 = getCompletedResume1(UUID_1, "Григорий Кислин");
+        R2 = getCompletedResume2(UUID_2, "Эрнест Хемингуэй");
+        R3 = getCompletedResume1(UUID_3, "Name Three");
+        R4 = getCompletedResume1(UUID_4, "Name Four");
     }
 
-    public static Resume getCompletedResume(String uuid, String fullName) {
+    public static Resume getCompletedResume1(String uuid, String fullName) {
         Resume resume;
         if (uuid == null) {
             resume = new Resume(fullName);
@@ -35,7 +36,7 @@ public class ResumeTestData {
         }
 
         // Контакты
-        if (fullName.equals("Name 4")) {
+        if (fullName.equals("Name Four")) {
             resume.setContact(ContactType.PHONE_NUMBER, "44444");
             resume.setContact(ContactType.SKYPE, "Skype");
         } else {
@@ -120,11 +121,11 @@ public class ResumeTestData {
                 new Organization("Coursera", "https://www.coursera.org/course/progfun",
                         new Organization.Position(LocalDate.of(2013, Month.MARCH, 1),
                                 LocalDate.of(2013, Month.MAY, 1),
-                                "\"Functional Programming Principles in Scala\" by Martin Odersky", null)),
+                                "Functional Programming Principles in Scala by Martin Odersky", null)),
                 new Organization("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
                         new Organization.Position(LocalDate.of(2011, Month.MARCH, 1),
                                 LocalDate.of(2011, Month.APRIL, 1),
-                                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"", null)),
+                                "Курс Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.", null)),
                 new Organization("Siemens AG", "http://www.siemens.ru/",
                         new Organization.Position(LocalDate.of(2005, Month.JANUARY, 1),
                                 LocalDate.of(2005, Month.APRIL, 1),
@@ -145,6 +146,102 @@ public class ResumeTestData {
                         new Organization.Position(LocalDate.of(1984, Month.SEPTEMBER, 1),
                                 LocalDate.of(1987, Month.JUNE, 1),
                                 "Закончил с отличием", null))));
+
+        return resume;
+    }
+
+    public static Resume getCompletedResume2(String uuid, String fullName) {
+        Resume resume;
+        if (uuid == null) {
+            resume = new Resume(fullName);
+        } else {
+            resume = new Resume(uuid, fullName);
+        }
+
+        // Контакты
+        resume.setContact(ContactType.HOME_PAGE,
+                "http://https://www.nobelprize.org/prizes/literature/1954/hemingway/biographical/");
+
+        // Позиция
+        resume.setSection(SectionType.OBJECTIVE, new TextSection("Журналист, писатель"));
+
+        // Личные качества
+        resume.setSection(SectionType.PERSONAL, new TextSection("Харизма, твердость характера. Увлечение рыболовством, охотой, боксом, корридой, кошками, путешествиями"));
+
+        // Достижения
+        resume.setSection(SectionType.ACHIEVEMENT, new ListSection("Получил широкое признание благодаря своим романам и многочисленным рассказам и своей жизни, полной приключений и неожиданностей\n",
+                "Значительное влияние на литературу XX века\n", "Получил Пулитцеровскую премию\n",
+                "Получил Нобелевскую примеию\n"));
+
+        // Квалификация
+        resume.setSection(SectionType.QUALIFICATIONS, new ListSection("Написание прозы высокго качества\n",
+                "Написание статей для различных журналов, репортерская деятельность\n",
+                "Подготовка исследовательстких и аналитических материалов на широкий спектр тем\n",
+                "Написание кино-сценариев\n",
+                "Английский язык (родной), французский (могу говорить), немецкий (могу говорить строго), испанский (могу говорить)\n"));
+
+        // Опыт работы
+        resume.setSection(SectionType.EXPERIENCE, new OrganizationSection(
+                new Organization("Газета The Kansas City Star, Канзас-Сити", "https://www.kansascity.com",
+                        new Organization.Position(LocalDate.of(1917, Month.JANUARY, 1),
+                                LocalDate.of(1917, Month.DECEMBER, 1), "Полицейский репортер",
+                                "Патрулировал город, выезжал на происшествия, оттачивал стиль")),
+                new Organization("Фронт Первой мировой войны, Италия", null,
+                        new Organization.Position(LocalDate.of(1918, Month.JANUARY, 1),
+                                LocalDate.of(1918, Month.DECEMBER, 1),
+                                "Водитель санитарной машины)",
+                                "Не попал в армию по зрению, устроился добровольцем в Красный Крест, попал под обстрел, навидался всякого")),
+                new Organization("Газета Toronto Star, Торонто", "https://www.thestar.com",
+                        new Organization.Position(LocalDate.of(1920, Month.JANUARY, 1),
+                                LocalDate.of(1924, Month.DECEMBER, 1), "Репортер",
+                                "Удаленная работа, командировки на греко-турецкую войну, в Италию, Испанию, Германию и т. п.")),
+                new Organization("Газета Cooperative Commonwealth, Чикаго", null,
+                        new Organization.Position(LocalDate.of(1921, Month.JANUARY, 1),
+                                LocalDate.of(1921, Month.FEBRUARY, 1), "Редактор",
+                                "Работал в газете два месяца, пока та не закрылась из-за скандала\n")),
+                new Organization("Freelance", null,
+                        new Organization.Position(LocalDate.of(1923, Month.JANUARY, 1),
+                                DateUtil.NOW, "Публикуемый автор",
+                                "Начал со сборника «Три истории и десять поэм», с 1929 года, после «Прощай, оружие», полностью обеспечивал себя писательскими гонорарами\n")),
+                new Organization("Испания, страна", null,
+                        new Organization.Position(LocalDate.of(1932, Month.JANUARY, 1),
+                                LocalDate.of(1933, Month.JANUARY, 1), "Автор-исследователь",
+                                "Исследовательская работа по боям быков, сбор материала для «Смерти после полудня»")),
+                new Organization("Африка, материк", null,
+                        new Organization.Position(LocalDate.of(1933, Month.FEBRUARY, 1),
+                                LocalDate.of(1934, Month.DECEMBER, 1), "Охотник-путешественник",
+                                "10-недельное сафари по Африке, охота на дичь, сбор материала для «Зеленых холмов Африки»")),
+                new Organization("Испания, страна", null,
+                        new Organization.Position(LocalDate.of(1937, Month.JANUARY, 1),
+                                LocalDate.of(1937, Month.JUNE, 1), "Военный корреспондент",
+                                "Североамериканская газетная ассоциация. Репортаж с места военных действий (Гражданская войнв в Испании), удаленная работа.")),
+                new Organization("Freelance", null,
+                        new Organization.Position(LocalDate.of(1937, Month.JULY, 1),
+                                LocalDate.of(1937, Month.DECEMBER, 1), "Сценарист, драматург",
+                                "Работа над сценарием фильма «Испанская земля»")),
+                new Organization("Личный катер Pilar (Куба, Карибское море)", null,
+                        new Organization.Position(LocalDate.of(1942, Month.JANUARY, 1),
+                                LocalDate.of(1943, Month.DECEMBER, 1), "Охотник за подводными лодками",
+                                "Нагрузил катер друзьями, отправился искать в море, не нашел")),
+                new Organization("Collier's Magazine", "https://onlinebooks.library.upenn.edu/webbin/serial?id=colliers",
+                        new Organization.Position(LocalDate.of(1944, Month.JANUARY, 1),
+                                LocalDate.of(1945, Month.DECEMBER, 1), "Военный корреспондент",
+                                "Участие в боевых действиях, разведывательных полетах, высадке союзников в Нормандии, взятии Парижа")),
+                new Organization("Журнал Life", "https://www.life.com",
+                        new Organization.Position(LocalDate.of(1952, Month.JANUARY, 1),
+                                LocalDate.of(1952, Month.DECEMBER, 1), "Писатель",
+                                "Публикация повести «Старик и море», Пулитцеровская премия, Нобелевская премия"))));
+
+        // Образование
+        resume.setSection(SectionType.EDUCATION, new OrganizationSection(
+                new Organization("Старшая школа Oak Park and River Forest High School, Чикаго", null,
+                        new Organization.Position(LocalDate.of(1913, Month.OCTOBER, 1),
+                                LocalDate.of(1917, Month.JUNE, 1),
+                                "Начал заниматься боксом, играть в футбол и писать для школьной газеты", null)),
+                new Organization("Самообразование, самодисциплина", null,
+                        new Organization.Position(LocalDate.of(1921, Month.JANUARY, 1),
+                                LocalDate.of(1961, Month.JULY, 1),
+                                "Много читал и писал по 500 слов в день, редактировал, снова писал", null))));
 
         return resume;
     }

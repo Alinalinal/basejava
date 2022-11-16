@@ -35,7 +35,7 @@ public class ResumeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName").trim();
@@ -100,7 +100,8 @@ public class ResumeServlet extends HttpServlet {
                                 String endDate = request.getParameter(prefix2 + "endDate");
                                 String title = request.getParameter(prefix2 + "title");
                                 if (title != null && title.trim().length() != 0) {
-                                    String description = request.getParameter(prefix2 + "description");
+                                    String description = (type == SectionType.EXPERIENCE)
+                                            ? request.getParameter(prefix2 + "description") : "";
                                     positions.add(new Organization.Position(DateUtil.format(startDate),
                                             DateUtil.format(endDate), title, description));
                                 }

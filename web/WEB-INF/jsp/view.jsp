@@ -58,30 +58,30 @@
                 <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
                     <c:forEach var="organization" items="<%=((OrganizationSection) section).getContent()%>">
                         <div class="section-wrapper">
-                        <c:choose>
-                            <c:when test="${empty organization.homePage.url}">
-                                <div class="job-name">${organization.homePage.name}</div>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="job-name"><a class="contact-link" href="${organization.homePage.url}">
-                                        ${organization.homePage.name}</a></div>
-                            </c:otherwise>
-                        </c:choose>
-                        <c:forEach var="position" items="${organization.positions}">
-                            <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
-                            <div class="period-position">
-                                <div class="period"><%=HtmlUtil.formatDates(position)%>
-                                </div>
-                                <div class="position">${position.title}</div>
-                            </div>
                             <c:choose>
-                                <c:when test="${empty position.description}">
+                                <c:when test="${empty organization.homePage.url}">
+                                    <div class="job-name">${organization.homePage.name}</div>
                                 </c:when>
                                 <c:otherwise>
-                                    <div class="description">${position.description}</div>
+                                    <div class="job-name"><a class="contact-link" href="${organization.homePage.url}">
+                                            ${organization.homePage.name}</a></div>
                                 </c:otherwise>
                             </c:choose>
-                        </c:forEach>
+                            <c:forEach var="position" items="${organization.positions}">
+                                <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
+                                <div class="period-position">
+                                    <div class="period"><%=HtmlUtil.formatDates(position)%>
+                                    </div>
+                                    <div class="position">${position.title}</div>
+                                </div>
+                                <c:choose>
+                                    <c:when test="${empty position.description}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="description">${position.description}</div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
                         </div>
                     </c:forEach>
                 </c:when>
