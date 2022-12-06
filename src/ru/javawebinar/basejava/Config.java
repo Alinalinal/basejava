@@ -4,6 +4,7 @@ import ru.javawebinar.basejava.storage.SqlStorage;
 import ru.javawebinar.basejava.storage.Storage;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -11,7 +12,8 @@ import java.util.Properties;
 import java.util.Set;
 
 public class Config {
-    protected static final String PROPS = "/resumes.properties";
+    protected static final File PROPS = new File(getHomeDir(), "config/resumes.properties");
+    // protected static final String PROPS = "/resumes.properties"; // for heroku
     private static final Config INSTANCE = new Config();
 
     private final File storageDir;
@@ -22,14 +24,16 @@ public class Config {
     }};
 
     private Config() {
-        try (InputStream is = Config.class.getResourceAsStream(PROPS)) {
+        try (InputStream is = new FileInputStream(PROPS)) {
+        // try (InputStream is = Config.class.getResourceAsStream(PROPS)) { // for heroku
             Properties props = new Properties();
             props.load(is);
             storageDir = new File(props.getProperty("storage.dir"));
             sqlStorage = new SqlStorage(props.getProperty("db.url"), props.getProperty("db.user"),
                     props.getProperty("db.password"));
         } catch (IOException e) {
-            throw new IllegalStateException("Invalid config file " + PROPS);
+            throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
+            // throw new IllegalStateException("Invalid config file " + PROPS); // for heroku
         }
     }
 
@@ -43,6 +47,16 @@ public class Config {
 
     public Storage getSqlStorage() {
         return sqlStorage;
+    }
+
+    // method for Tomcat
+    private static File getHomeDir() {
+        String prop = System.getProperty("homeDir");
+        File homeDir = new File(prop == null ? "." : prop);
+        if (!homeDir.isDirectory()) {
+            throw new IllegalStateException(homeDir + " is not directory");
+        }
+        return homeDir;
     }
 
     public boolean isImmutable(String uuid) {
